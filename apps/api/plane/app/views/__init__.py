@@ -238,3 +238,24 @@ from .notification.base import MarkAllReadNotificationViewSet
 from .user.base import AccountEndpoint, ProfileEndpoint, UserSessionEndpoint
 
 from .timezone.base import TimezoneEndpoint
+
+from .integration import (
+    WorkspaceIntegrationViewSet,
+    IntegrationViewSet,
+    GithubIssueSyncViewSet,
+    GithubRepositorySyncViewSet,
+    GithubCommentSyncViewSet,
+    GithubRepositoriesEndpoint,
+    BulkCreateGithubIssueSyncEndpoint,
+    SlackProjectSyncViewSet,
+    SlackEventsEndpoint,
+    GithubAppWebhookEndpoint,
+)
+
+from .importer import (
+    ServiceIssueImportSummaryEndpoint,
+    ImportServiceEndpoint,
+    UpdateServiceImportStatusEndpoint,
+    BulkImportIssuesEndpoint,
+    BulkImportModulesEndpoint,
+)

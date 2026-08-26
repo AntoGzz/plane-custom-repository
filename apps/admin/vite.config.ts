@@ -35,7 +35,8 @@ export default defineConfig(() => ({
     dedupe: ["react", "react-dom"],
   },
   server: {
-    host: "127.0.0.1",
+    // Keep in sync with ADMIN_BASE_URL / CORS (localhost, not only 127.0.0.1)
+    host: "localhost",
   },
   // No SSR-specific overrides needed; alias resolves to ESM build
 }));

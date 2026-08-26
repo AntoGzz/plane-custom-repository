@@ -1583,6 +1583,16 @@ def issue_activity(
         # Save all the values to database
         issue_activities_created = IssueActivity.objects.bulk_create(issue_activities)
 
+        # Fan-out to Slack project channels when configured
+        try:
+            from plane.bgtasks.slack_notify_task import slack_notify_on_activity
+
+            for activity in issue_activities_created:
+                if activity and activity.id:
+                    slack_notify_on_activity.delay(str(activity.id))
+        except Exception:
+            pass
+
         if notification:
             notifications.delay(
                 type=type,

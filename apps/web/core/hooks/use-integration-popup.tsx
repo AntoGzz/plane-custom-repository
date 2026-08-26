@@ -22,12 +22,13 @@ const useIntegrationPopup = ({
 
   const { workspaceSlug, projectId } = useParams();
 
+  const slackRedirect = typeof window !== "undefined" ? `${window.location.origin}/integrations/slack/callback` : "";
   const providerUrls: { [key: string]: string } = {
     github: `https://github.com/apps/${github_app_name}/installations/new?state=${workspaceSlug?.toString()}`,
-    slack: `https://slack.com/oauth/v2/authorize?scope=chat:write,im:history,im:write,links:read,links:write,users:read,users:read.email&amp;user_scope=&amp;&client_id=${slack_client_id}&state=${workspaceSlug?.toString()}`,
+    slack: `https://slack.com/oauth/v2/authorize?scope=chat:write,commands,im:history,im:write,links:read,links:write,users:read,users:read.email&client_id=${slack_client_id}&state=${workspaceSlug?.toString()}&redirect_uri=${encodeURIComponent(slackRedirect)}`,
     slackChannel: `https://slack.com/oauth/v2/authorize?scope=incoming-webhook&client_id=${slack_client_id}&state=${workspaceSlug?.toString()},${projectId?.toString()}${
       stateParams ? "," + stateParams : ""
-    }`,
+    }&redirect_uri=${encodeURIComponent(slackRedirect)}`,
   };
 
   const popup = useRef<any>();

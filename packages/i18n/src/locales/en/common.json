@@ -717,7 +717,9 @@
     "developer": "Developer",
     "work_structure": "Work structure",
     "execution": "Execution",
-    "administration": "Administration"
+    "administration": "Administration",
+    "integrations": "Integrations",
+    "imports": "Imports"
   },
   "chart": {
     "x_axis": "X-axis",

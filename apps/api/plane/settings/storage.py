@@ -36,19 +36,44 @@ class S3Storage(S3Boto3Storage):
         # Use the SIGNED_URL_EXPIRATION environment variable for the expiration time (default: 3600 seconds)
         self.signed_url_expiration = int(os.environ.get("SIGNED_URL_EXPIRATION", "3600"))
 
+        # When browser URL ≠ Host seen by MinIO (e.g. Dev Tunnels rewrite Host to
+        # localhost), sign against AWS_S3_SIGNING_ENDPOINT_URL and rewrite the URL.
+        self._signing_endpoint = None
+        self._browser_endpoint = None
+
         if os.environ.get("USE_MINIO") == "1":
             # Determine protocol based on environment variable
             if os.environ.get("MINIO_ENDPOINT_SSL") == "1":
                 endpoint_protocol = "https"
             else:
                 endpoint_protocol = request.scheme if request else "http"
+            # Browser-facing URL (Vite proxies /uploads → MinIO).
+            browser_endpoint = os.environ.get("AWS_S3_BROWSER_ENDPOINT_URL") or os.environ.get(
+                "MINIO_BROWSER_ENDPOINT_URL"
+            )
+            signing_endpoint = os.environ.get("AWS_S3_SIGNING_ENDPOINT_URL") or os.environ.get(
+                "MINIO_SIGNING_ENDPOINT_URL"
+            )
+            if browser_endpoint:
+                self._browser_endpoint = browser_endpoint.rstrip("/")
+            elif request:
+                self._browser_endpoint = f"{endpoint_protocol}://{request.get_host()}"
+            else:
+                self._browser_endpoint = (self.aws_s3_endpoint_url or "").rstrip("/") or None
+
+            if signing_endpoint:
+                self._signing_endpoint = signing_endpoint.rstrip("/")
+            else:
+                self._signing_endpoint = self._browser_endpoint
+
+            endpoint_url = self._signing_endpoint or self.aws_s3_endpoint_url
             # Create an S3 client for MinIO
             self.s3_client = boto3.client(
                 "s3",
                 aws_access_key_id=self.aws_access_key_id,
                 aws_secret_access_key=self.aws_secret_access_key,
                 region_name=self.aws_region,
-                endpoint_url=(f"{endpoint_protocol}://{request.get_host()}" if request else self.aws_s3_endpoint_url),
+                endpoint_url=endpoint_url,
                 config=boto3.session.Config(signature_version="s3v4"),
             )
         else:
@@ -61,6 +86,14 @@ class S3Storage(S3Boto3Storage):
                 endpoint_url=self.aws_s3_endpoint_url,
                 config=boto3.session.Config(signature_version="s3v4"),
             )
+
+    def _rewrite_browser_url(self, url):
+        """Swap signing host for the public browser host without resigning."""
+        if not url or not self._signing_endpoint or not self._browser_endpoint:
+            return url
+        if self._signing_endpoint == self._browser_endpoint:
+            return url
+        return url.replace(self._signing_endpoint, self._browser_endpoint, 1)
 
     def generate_presigned_post(self, object_name, file_type, file_size, expiration=None):
         """Generate a presigned URL to upload an S3 object"""
@@ -96,6 +129,8 @@ class S3Storage(S3Boto3Storage):
             print(f"Error generating presigned POST URL: {e}")
             return None
 
+        if response and "url" in response:
+            response["url"] = self._rewrite_browser_url(response["url"])
         return response
 
     def _get_content_disposition(self, disposition, filename=None):
@@ -136,8 +171,7 @@ class S3Storage(S3Boto3Storage):
             log_exception(e)
             return None
 
-        # The response contains the presigned URL
-        return response
+        return self._rewrite_browser_url(response)
 
     def get_object_metadata(self, object_name):
         """Get the metadata for an S3 object"""

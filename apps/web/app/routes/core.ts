@@ -282,6 +282,14 @@ export const coreRoutes: RouteConfigEntry[] = [
             ":workspaceSlug/settings/webhooks/:webhookId",
             "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/webhooks/[webhookId]/page.tsx"
           ),
+          route(
+            ":workspaceSlug/settings/integrations",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/integrations/page.tsx"
+          ),
+          route(
+            ":workspaceSlug/settings/imports",
+            "./(all)/[workspaceSlug]/(settings)/settings/(workspace)/imports/page.tsx"
+          ),
         ]),
 
         // --------------------------------------------------------------------
@@ -345,6 +353,10 @@ export const coreRoutes: RouteConfigEntry[] = [
                 "./(all)/[workspaceSlug]/(settings)/settings/projects/[projectId]/automations/page.tsx"
               ),
             ]),
+            route(
+              ":workspaceSlug/settings/projects/:projectId/integrations",
+              "./(all)/[workspaceSlug]/(settings)/settings/projects/[projectId]/integrations/page.tsx"
+            ),
           ]),
         ]),
       ]),
@@ -360,6 +372,9 @@ export const coreRoutes: RouteConfigEntry[] = [
     layout("./(all)/settings/profile/layout.tsx", [
       route("settings/profile/:profileTabId", "./(all)/settings/profile/[profileTabId]/page.tsx"),
     ]),
+
+    // Integration OAuth / GitHub App callbacks
+    route("integrations/:provider/callback", "./(all)/integrations/[provider]/callback/page.tsx"),
   ]),
 
   // ========================================================================

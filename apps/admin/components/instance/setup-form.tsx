@@ -22,15 +22,25 @@ import { FormHeader } from "./form-header";
 // service initialization
 const authService = new AuthService();
 
-// error codes
+// Backend sends numeric `error_code` + string `error_message` (see AUTHENTICATION_ERROR_CODES).
+// Match on `error_message` (and accept legacy/frontend aliases).
 enum EErrorCodes {
   INSTANCE_NOT_CONFIGURED = "INSTANCE_NOT_CONFIGURED",
   ADMIN_ALREADY_EXIST = "ADMIN_ALREADY_EXIST",
-  REQUIRED_EMAIL_PASSWORD_FIRST_NAME = "REQUIRED_EMAIL_PASSWORD_FIRST_NAME",
-  INVALID_EMAIL = "INVALID_EMAIL",
-  INVALID_PASSWORD = "INVALID_PASSWORD",
-  USER_ALREADY_EXISTS = "USER_ALREADY_EXISTS",
+  REQUIRED_EMAIL_PASSWORD_FIRST_NAME = "REQUIRED_ADMIN_EMAIL_PASSWORD_FIRST_NAME",
+  INVALID_EMAIL = "INVALID_ADMIN_EMAIL",
+  INVALID_PASSWORD = "PASSWORD_TOO_WEAK",
+  USER_ALREADY_EXISTS = "ADMIN_USER_ALREADY_EXIST",
 }
+
+const ERROR_MESSAGE_ALIASES: Record<string, EErrorCodes> = {
+  REQUIRED_EMAIL_PASSWORD_FIRST_NAME: EErrorCodes.REQUIRED_EMAIL_PASSWORD_FIRST_NAME,
+  INVALID_EMAIL: EErrorCodes.INVALID_EMAIL,
+  INVALID_PASSWORD: EErrorCodes.INVALID_PASSWORD,
+  INVALID_ADMIN_PASSWORD: EErrorCodes.INVALID_PASSWORD,
+  USER_ALREADY_EXISTS: EErrorCodes.USER_ALREADY_EXISTS,
+  USER_ALREADY_EXIST: EErrorCodes.USER_ALREADY_EXISTS,
+};
 
 type TError = {
   type: EErrorCodes | undefined;
@@ -64,9 +74,15 @@ export function InstanceSetupForm() {
   const lastNameParam = searchParams?.get("last_name") || undefined;
   const companyParam = searchParams?.get("company") || undefined;
   const emailParam = searchParams?.get("email") || undefined;
-  const isTelemetryEnabledParam = (searchParams?.get("is_telemetry_enabled") === "True" ? true : false) || true;
-  const errorCode = searchParams?.get("error_code") || undefined;
+  const isTelemetryEnabledParam = (searchParams?.get("is_telemetry_enabled") ?? "True") === "True";
+  // Prefer error_message (string key). error_code from API is numeric and not useful here.
   const errorMessage = searchParams?.get("error_message") || undefined;
+  const errorCode =
+    (errorMessage &&
+      (Object.values(EErrorCodes).includes(errorMessage as EErrorCodes)
+        ? (errorMessage as EErrorCodes)
+        : ERROR_MESSAGE_ALIASES[errorMessage])) ||
+    undefined;
   // state
   const [showPassword, setShowPassword] = useState({
     password: false,
@@ -99,36 +115,37 @@ export function InstanceSetupForm() {
 
   // derived values
   const errorData: TError = useMemo(() => {
-    if (errorCode && errorMessage) {
-      switch (errorCode) {
-        case EErrorCodes.INSTANCE_NOT_CONFIGURED:
-          return { type: EErrorCodes.INSTANCE_NOT_CONFIGURED, message: errorMessage };
-        case EErrorCodes.ADMIN_ALREADY_EXIST:
-          return { type: EErrorCodes.ADMIN_ALREADY_EXIST, message: errorMessage };
-        case EErrorCodes.REQUIRED_EMAIL_PASSWORD_FIRST_NAME:
-          return { type: EErrorCodes.REQUIRED_EMAIL_PASSWORD_FIRST_NAME, message: errorMessage };
-        case EErrorCodes.INVALID_EMAIL:
-          return { type: EErrorCodes.INVALID_EMAIL, message: errorMessage };
-        case EErrorCodes.INVALID_PASSWORD:
-          return { type: EErrorCodes.INVALID_PASSWORD, message: errorMessage };
-        case EErrorCodes.USER_ALREADY_EXISTS:
-          return { type: EErrorCodes.USER_ALREADY_EXISTS, message: errorMessage };
-        default:
-          return { type: undefined, message: undefined };
-      }
-    } else return { type: undefined, message: undefined };
-  }, [errorCode, errorMessage]);
+    if (!errorCode) return { type: undefined, message: undefined };
+
+    switch (errorCode) {
+      case EErrorCodes.INSTANCE_NOT_CONFIGURED:
+        return { type: errorCode, message: "Instance is not configured yet." };
+      case EErrorCodes.ADMIN_ALREADY_EXIST:
+        return { type: errorCode, message: "An instance admin already exists. Please sign in instead." };
+      case EErrorCodes.REQUIRED_EMAIL_PASSWORD_FIRST_NAME:
+        return { type: errorCode, message: "First name, email and password are required." };
+      case EErrorCodes.INVALID_EMAIL:
+        return { type: errorCode, message: "Please enter a valid email address." };
+      case EErrorCodes.INVALID_PASSWORD:
+        return {
+          type: errorCode,
+          message: "Password is too weak. Use at least 8 characters with mixed letters, numbers and symbols.",
+        };
+      case EErrorCodes.USER_ALREADY_EXISTS:
+        return { type: errorCode, message: "A user with this email already exists." };
+      default:
+        return { type: undefined, message: undefined };
+    }
+  }, [errorCode]);
 
   const isButtonDisabled = useMemo(
     () =>
-      !isSubmitting &&
-      formData.first_name &&
-      formData.email &&
-      formData.password &&
-      getPasswordStrength(formData.password) === E_PASSWORD_STRENGTH.STRENGTH_VALID &&
-      formData.password === formData.confirm_password
-        ? false
-        : true,
+      isSubmitting ||
+      !formData.first_name ||
+      !formData.email ||
+      !formData.password ||
+      getPasswordStrength(formData.password) !== E_PASSWORD_STRENGTH.STRENGTH_VALID ||
+      formData.password !== formData.confirm_password,
     [formData.confirm_password, formData.email, formData.first_name, formData.password, isSubmitting]
   );
 
@@ -180,7 +197,6 @@ export function InstanceSetupForm() {
                     }
                   }}
                   autoComplete="off"
-                  autoFocus
                   maxLength={50}
                 />
               </div>
@@ -221,7 +237,7 @@ export function InstanceSetupForm() {
                 placeholder="name@company.com"
                 value={formData.email}
                 onChange={(e) => handleFormChange("email", e.target.value)}
-                hasError={errorData.type && errorData.type === EErrorCodes.INVALID_EMAIL ? true : false}
+                hasError={errorData.type === EErrorCodes.INVALID_EMAIL}
                 autoComplete="off"
               />
               {errorData.type && errorData.type === EErrorCodes.INVALID_EMAIL && errorData.message && (
@@ -265,7 +281,7 @@ export function InstanceSetupForm() {
                   placeholder="New password"
                   value={formData.password}
                   onChange={(e) => handleFormChange("password", e.target.value)}
-                  hasError={errorData.type && errorData.type === EErrorCodes.INVALID_PASSWORD ? true : false}
+                  hasError={errorData.type === EErrorCodes.INVALID_PASSWORD}
                   onFocus={() => setIsPasswordInputFocused(true)}
                   onBlur={() => setIsPasswordInputFocused(false)}
                   autoComplete="new-password"

@@ -26,6 +26,9 @@ build/
 *.pem
 .history
 tsconfig.tsbuildinfo
+Thumbs.db
+*.swp
+*~
 
 # Debug
 npm-debug.log*
@@ -33,9 +36,13 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .pnpm-debug.log*
+*.log
 
-# Local env files
+# Local env files (keep *.example tracked)
 .env
+.env.*
+!.env.example
+!.env.*.example
 .env.local
 .env.development.local
 .env.test.local
@@ -51,19 +58,22 @@ pnpm-debug.log*
 venv
 .venv
 *.pyc
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
 staticfiles
 mediafiles
-.env
-.DS_Store
 logs/
 htmlcov/
 .coverage
+.coverage.*
+coverage/
+.nyc_output/
 
 node_modules/
 assets/dist/
-npm-debug.log
-yarn-error.log
-pnpm-debug.log
 
 # Editor directories and files
 .idea
@@ -72,7 +82,7 @@ pnpm-debug.log
 *.njsproj
 *.sln
 package-lock.json
-.vscode
+.vscode/
 
 # Sentry
 .sentryclirc
@@ -80,10 +90,9 @@ package-lock.json
 # lock files
 package-lock.json
 
-
-
 .secrets
 tmp/
+temp/
 
 ## packages
 dist
@@ -93,27 +102,39 @@ deploy/selfhost/plane-app/
 ## Storybook
 *storybook.log
 output.css
+storybook-static
 
 dev-editor
+
 # Redis
 *.rdb
 *.rdb.gz
 
-storybook-static
-
 CLAUDE.md
-
-build/
-.react-router/
-
-build/
-.react-router/
-temp/
-scripts/
-!packages/i18n/scripts/
 
 # i18n auto-generated types (regenerated on every build)
 packages/i18n/src/types/keys.generated.ts
 
 # Local security notes (not for version control)
 /security/
+
+# Local deploy helpers & runtime artifacts (Plane dev fork)
+.deploy/env-backup-selfhost/
+.deploy/*.log
+.deploy/*.pid
+.deploy/*.tmp
+
+# Docker local overrides
+docker-compose.override.yml
+docker-compose.override.yaml
+
+# Cursor / local agent artifacts
+.cursor/
+
+# Local setup notes with secrets (use LOCAL_SETUP.md as the tracked doc)
+apps/*/.env
+apps/*/.env.local
+
+# Local-only scripts at repo root (keep packages/i18n/scripts)
+scripts/
+!packages/i18n/scripts/

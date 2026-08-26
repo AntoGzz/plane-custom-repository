@@ -5,6 +5,7 @@
  */
 
 import { observer } from "mobx-react";
+import { Link } from "react-router";
 import useSWR from "swr";
 // components
 import { EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
@@ -42,6 +43,12 @@ function WorkspaceIntegrationsPage() {
       <PageHead title={pageTitle} />
       <section className="w-full overflow-y-auto">
         <IntegrationAndImportExportBanner bannerName="Integrations" />
+        <div className="text-sm px-4 pb-2 text-secondary">
+          Need a one-shot import?{" "}
+          <Link className="text-accent-primary underline" to={`/${currentWorkspace?.slug}/settings/imports`}>
+            Open Imports
+          </Link>
+        </div>
         <div>
           {appIntegrations ? (
             appIntegrations.map((integration) => (
