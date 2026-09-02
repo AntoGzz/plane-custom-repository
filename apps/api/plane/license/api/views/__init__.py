@@ -26,3 +26,10 @@ from .workspace import (
     InstanceWorkSpaceAvailabilityCheckEndpoint,
     InstanceWorkSpaceEndpoint,
 )
+
+from .backup import (
+    InstanceBackupEndpoint,
+    InstanceBackupDetailEndpoint,
+    InstanceBackupDownloadEndpoint,
+    InstanceBackupRestoreEndpoint,
+)

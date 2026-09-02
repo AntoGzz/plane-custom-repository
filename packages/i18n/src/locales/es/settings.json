@@ -65,6 +65,50 @@
       "title": "Conexiones",
       "heading": "Conexiones",
       "description": "Administra la configuración de conexiones de tu espacio de trabajo."
+    },
+    "backup": {
+      "heading": "Copias de seguridad",
+      "description": "Crea y descarga instantáneas de esta instancia de Plane, incluida la base de datos y los archivos subidos.",
+      "create": "Crear copia de seguridad",
+      "creating": "Creando copia de seguridad",
+      "components": "Qué incluir",
+      "include_database": "Base de datos",
+      "include_files": "Archivos (MinIO / S3)",
+      "database": "Base de datos",
+      "files": "Archivos",
+      "note_label": "Nota",
+      "note_placeholder": "Nota opcional para esta instantánea",
+      "empty_description": "Aún no hay copias de seguridad. Crea una para guardar la base de datos y los archivos subidos.",
+      "download": "Descargar",
+      "delete": "Eliminar",
+      "restore": "Restaurar",
+      "restoring": "Restaurando",
+      "delete_title": "¿Eliminar esta copia de seguridad?",
+      "delete_description": "El archivo de la copia se eliminará de forma permanente. Esta acción no se puede deshacer.",
+      "restore_title": "¿Restaurar esta copia de seguridad?",
+      "restore_description": "Esto sustituye la base de datos y los archivos actuales por la instantánea. La instancia puede no estar disponible hasta que termine. Esta acción no se puede deshacer.",
+      "forbidden": "Solo los administradores de la instancia pueden gestionar copias de seguridad.",
+      "status": {
+        "queued": "En cola",
+        "processing": "En curso",
+        "completed": "Lista",
+        "failed": "Error",
+        "restoring": "Restaurando"
+      },
+      "errors": {
+        "select_component": "Selecciona al menos la base de datos o los archivos."
+      },
+      "toast": {
+        "created_title": "Copia iniciada",
+        "created_message": "Podrás descargarla cuando la instantánea esté lista.",
+        "deleted_title": "Copia eliminada",
+        "deleted_message": "La instantánea se eliminó.",
+        "restored_title": "Restauración iniciada",
+        "restored_message": "Mantén esta pestaña abierta hasta que termine. Puede que tengas que recargar después.",
+        "error_title": "Algo salió mal",
+        "error_message": "No se pudo completar la acción de copia de seguridad.",
+        "download_error": "No se pudo descargar el archivo de la copia."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferencias",
       "notifications": "Notificaciones",
       "api-tokens": "Tokens de acceso personal",
-      "connections": "Conexiones"
+      "connections": "Conexiones",
+      "backup": "Copias de seguridad"
     },
     "tabs": {
       "summary": "Resumen",

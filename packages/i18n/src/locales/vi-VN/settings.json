@@ -65,6 +65,50 @@
       "title": "Kết nối",
       "heading": "Kết nối",
       "description": "Quản lý cài đặt kết nối không gian làm việc của bạn."
+    },
+    "backup": {
+      "heading": "Sao lưu",
+      "description": "Tạo và tải xuống ảnh chụp phiên bản Plane này, bao gồm cơ sở dữ liệu và tệp đã tải lên.",
+      "create": "Tạo bản sao lưu",
+      "creating": "Đang tạo bản sao lưu",
+      "components": "Nội dung đưa vào",
+      "include_database": "Cơ sở dữ liệu",
+      "include_files": "Tệp (MinIO / S3)",
+      "database": "Cơ sở dữ liệu",
+      "files": "Tệp",
+      "note_label": "Ghi chú",
+      "note_placeholder": "Ghi chú tùy chọn cho ảnh chụp này",
+      "empty_description": "Chưa có bản sao lưu. Tạo một bản để lưu cơ sở dữ liệu và tệp đã tải lên.",
+      "download": "Tải xuống",
+      "delete": "Xóa",
+      "restore": "Khôi phục",
+      "restoring": "Đang khôi phục",
+      "delete_title": "Xóa bản sao lưu này?",
+      "delete_description": "Tệp sao lưu sẽ bị xóa vĩnh viễn. Không thể hoàn tác.",
+      "restore_title": "Khôi phục bản sao lưu này?",
+      "restore_description": "Thao tác này thay thế cơ sở dữ liệu và tệp hiện tại bằng ảnh chụp. Phiên bản có thể không khả dụng cho đến khi hoàn tất. Không thể hoàn tác.",
+      "forbidden": "Chỉ quản trị viên phiên bản mới có thể quản lý sao lưu.",
+      "status": {
+        "queued": "Đang chờ",
+        "processing": "Đang xử lý",
+        "completed": "Sẵn sàng",
+        "failed": "Thất bại",
+        "restoring": "Đang khôi phục"
+      },
+      "errors": {
+        "select_component": "Chọn ít nhất cơ sở dữ liệu hoặc tệp."
+      },
+      "toast": {
+        "created_title": "Đã bắt đầu sao lưu",
+        "created_message": "Bạn có thể tải xuống khi ảnh chụp sẵn sàng.",
+        "deleted_title": "Đã xóa bản sao lưu",
+        "deleted_message": "Ảnh chụp đã được gỡ.",
+        "restored_title": "Đã bắt đầu khôi phục",
+        "restored_message": "Giữ tab này mở cho đến khi hoàn tất. Sau đó bạn có thể cần tải lại.",
+        "error_title": "Đã xảy ra lỗi",
+        "error_message": "Không thể hoàn tất thao tác sao lưu.",
+        "download_error": "Không thể tải xuống tệp sao lưu."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Tùy chọn",
       "notifications": "Thông báo",
       "api-tokens": "Mã truy cập cá nhân",
-      "connections": "Kết nối"
+      "connections": "Kết nối",
+      "backup": "Sao lưu"
     },
     "tabs": {
       "summary": "Tóm tắt",

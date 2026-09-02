@@ -103,7 +103,12 @@ const validateAndDetectFileType = async (file: File): Promise<string> => {
     console.warn("Error detecting file type from signature:", _error);
   }
 
-  // fallback for unknown files
+  // Signature detection can fail for valid images/videos; the browser MIME is
+  // still checked against the backend allowlist.
+  if (file.type && file.type.trim() !== "") {
+    return file.type;
+  }
+
   return "";
 };
 

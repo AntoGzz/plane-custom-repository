@@ -88,7 +88,7 @@ export const SubIssuesListItem = observer(function SubIssuesListItem(props: Prop
   const displayProperties = subIssueFilters?.displayProperties ?? {};
 
   //
-  const handleIssuePeekOverview = (issue: TIssue) => handleRedirection(workspaceSlug, issue, isMobile);
+  const handleIssuePeekOverview = (peekIssue: TIssue) => handleRedirection(workspaceSlug, peekIssue, isMobile);
 
   if (!issue) return <></>;
 
@@ -105,150 +105,141 @@ export const SubIssuesListItem = observer(function SubIssuesListItem(props: Prop
 
   return (
     <div key={issueId}>
-      <ControlLink
-        id={`issue-${issue.id}`}
-        href={workItemLink}
-        onClick={() => handleIssuePeekOverview(issue)}
-        className="w-full cursor-pointer"
+      <div
+        className="group relative flex h-full min-h-11 w-full items-center py-1 pr-2 transition-all hover:bg-surface-2"
+        style={{ paddingLeft: `${spacingLeft}px` }}
       >
-        {issue && (
-          <div
-            className="group relative flex h-full min-h-11 w-full items-center py-1 pr-2 transition-all hover:bg-surface-2"
-            style={{ paddingLeft: `${spacingLeft}px` }}
-          >
-            <div className="flex size-5 flex-shrink-0 items-center justify-center">
-              {/* disable the chevron when current issue is also the root issue*/}
-              {subIssueCount > 0 && !isCurrentIssueRoot && (
-                <>
-                  {subIssueHelpers.preview_loader.includes(issue.id) ? (
-                    <div className="flex h-full w-full cursor-not-allowed items-center justify-center rounded-xs bg-layer-1 transition-all">
-                      <Loader width={14} strokeWidth={2} className="animate-spin" />
-                    </div>
-                  ) : (
-                    <div
-                      className="flex h-full w-full cursor-pointer items-center justify-center text-placeholder hover:text-tertiary"
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        if (!subIssueHelpers.issue_visibility.includes(issueId)) {
-                          setSubIssueHelpers(parentIssueId, "preview_loader", issueId);
-                          await fetchSubIssues(workspaceSlug, projectId, issueId);
-                          setSubIssueHelpers(parentIssueId, "preview_loader", issueId);
-                        }
-                        setSubIssueHelpers(parentIssueId, "issue_visibility", issueId);
-                      }}
-                    >
-                      <ChevronRightIcon
-                        className={cn("size-3.5 transition-all", {
-                          "rotate-90": subIssueHelpers.issue_visibility.includes(issue.id),
-                        })}
-                        strokeWidth={2.5}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-
-            <div className="flex w-full cursor-pointer items-center gap-3 truncate">
-              <WithDisplayPropertiesHOC displayProperties={displayProperties || {}} displayPropertyKey="key">
-                <div className="flex-shrink-0">
-                  {projectDetail && (
-                    <IssueIdentifier
-                      projectId={projectDetail.id}
-                      issueTypeId={issue.type_id}
-                      projectIdentifier={projectDetail.identifier}
-                      issueSequenceId={issue.sequence_id}
-                      size="xs"
-                      variant="secondary"
-                    />
-                  )}
+        <div className="flex size-5 flex-shrink-0 items-center justify-center">
+          {/* disable the chevron when current issue is also the root issue*/}
+          {subIssueCount > 0 && !isCurrentIssueRoot && (
+            <>
+              {subIssueHelpers.preview_loader.includes(issue.id) ? (
+                <div className="flex h-full w-full cursor-not-allowed items-center justify-center rounded-xs bg-layer-1 transition-all">
+                  <Loader width={14} strokeWidth={2} className="animate-spin" />
                 </div>
-              </WithDisplayPropertiesHOC>
-              <Tooltip tooltipContent={issue.name} isMobile={isMobile}>
-                <span className="w-0 flex-1 truncate text-13 text-primary">{issue.name}</span>
-              </Tooltip>
-            </div>
-
-            <div
-              className="flex-shrink-0 text-13"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
-            >
-              <SubIssuesListItemProperties
-                workspaceSlug={workspaceSlug}
-                parentIssueId={parentIssueId}
-                issueId={issueId}
-                canEdit={canEdit}
-                updateSubIssue={subIssueOperations.updateSubIssue}
-                displayProperties={displayProperties}
-                issue={issue}
-              />
-            </div>
-
-            <div className="flex-shrink-0 text-13">
-              <CustomMenu placement="bottom-end" ellipsis>
-                {canEdit && (
-                  <CustomMenu.MenuItem
-                    onClick={() => {
-                      handleIssueCrudState("update", parentIssueId, { ...issue });
-                      toggleCreateIssueModal(true);
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <EditIcon className="h-3.5 w-3.5" strokeWidth={2} />
-                      <span>{t("issue.edit")}</span>
-                    </div>
-                  </CustomMenu.MenuItem>
-                )}
-
-                <CustomMenu.MenuItem
-                  onClick={() => {
-                    subIssueOperations.copyLink(workItemLink);
+              ) : (
+                <button
+                  type="button"
+                  className="flex h-full w-full cursor-pointer items-center justify-center bg-transparent p-0 text-placeholder hover:text-tertiary"
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!subIssueHelpers.issue_visibility.includes(issueId)) {
+                      setSubIssueHelpers(parentIssueId, "preview_loader", issueId);
+                      await fetchSubIssues(workspaceSlug, issue.project_id ?? projectId, issueId);
+                      setSubIssueHelpers(parentIssueId, "preview_loader", issueId);
+                    }
+                    setSubIssueHelpers(parentIssueId, "issue_visibility", issueId);
                   }}
                 >
-                  <div className="flex items-center gap-2">
-                    <LinkIcon className="h-3.5 w-3.5" strokeWidth={2} />
-                    <span>{t("issue.copy_link")}</span>
-                  </div>
-                </CustomMenu.MenuItem>
+                  <ChevronRightIcon
+                    className={cn("size-3.5 transition-all", {
+                      "rotate-90": subIssueHelpers.issue_visibility.includes(issue.id),
+                    })}
+                    strokeWidth={2.5}
+                  />
+                </button>
+              )}
+            </>
+          )}
+        </div>
 
-                {canEdit && (
-                  <CustomMenu.MenuItem
-                    onClick={() => {
-                      if (issue.project_id)
-                        subIssueOperations.removeSubIssue(workspaceSlug, issue.project_id, parentIssueId, issue.id);
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <CloseIcon className="h-3.5 w-3.5" strokeWidth={2} />
-                      {issueServiceType === EIssueServiceType.ISSUES
-                        ? t("issue.remove.parent.label")
-                        : t("issue.remove.label")}
-                    </div>
-                  </CustomMenu.MenuItem>
-                )}
-
-                {canEdit && (
-                  <CustomMenu.MenuItem
-                    onClick={() => {
-                      handleIssueCrudState("delete", parentIssueId, issue);
-                      toggleDeleteIssueModal(issue.id);
-                    }}
-                  >
-                    <div className="flex items-center gap-2">
-                      <TrashIcon className="h-3.5 w-3.5" strokeWidth={2} />
-                      <span>{t("issue.delete.label")}</span>
-                    </div>
-                  </CustomMenu.MenuItem>
-                )}
-              </CustomMenu>
+        <ControlLink
+          id={`issue-${issue.id}`}
+          href={workItemLink}
+          onClick={() => handleIssuePeekOverview(issue)}
+          className="flex min-w-0 flex-1 cursor-pointer items-center gap-3 truncate"
+        >
+          <WithDisplayPropertiesHOC displayProperties={displayProperties || {}} displayPropertyKey="key">
+            <div className="flex-shrink-0">
+              {projectDetail && (
+                <IssueIdentifier
+                  projectId={projectDetail.id}
+                  issueTypeId={issue.type_id}
+                  projectIdentifier={projectDetail.identifier}
+                  issueSequenceId={issue.sequence_id}
+                  size="xs"
+                  variant="secondary"
+                />
+              )}
             </div>
-          </div>
-        )}
-      </ControlLink>
+          </WithDisplayPropertiesHOC>
+          <Tooltip tooltipContent={issue.name} isMobile={isMobile}>
+            <span className="w-0 flex-1 truncate text-13 text-primary">{issue.name}</span>
+          </Tooltip>
+        </ControlLink>
+
+        <div className="flex-shrink-0 text-13">
+          <SubIssuesListItemProperties
+            workspaceSlug={workspaceSlug}
+            parentIssueId={parentIssueId}
+            issueId={issueId}
+            canEdit={canEdit}
+            updateSubIssue={subIssueOperations.updateSubIssue}
+            displayProperties={displayProperties}
+            issue={issue}
+          />
+        </div>
+
+        <div className="flex-shrink-0 text-13">
+          <CustomMenu placement="bottom-end" ellipsis>
+            {canEdit && (
+              <CustomMenu.MenuItem
+                onClick={() => {
+                  handleIssueCrudState("update", parentIssueId, { ...issue });
+                  toggleCreateIssueModal(true);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <EditIcon className="h-3.5 w-3.5" strokeWidth={2} />
+                  <span>{t("issue.edit")}</span>
+                </div>
+              </CustomMenu.MenuItem>
+            )}
+
+            <CustomMenu.MenuItem
+              onClick={() => {
+                subIssueOperations.copyLink(workItemLink);
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <LinkIcon className="h-3.5 w-3.5" strokeWidth={2} />
+                <span>{t("issue.copy_link")}</span>
+              </div>
+            </CustomMenu.MenuItem>
+
+            {canEdit && (
+              <CustomMenu.MenuItem
+                onClick={() => {
+                  if (issue.project_id)
+                    subIssueOperations.removeSubIssue(workspaceSlug, issue.project_id, parentIssueId, issue.id);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <CloseIcon className="h-3.5 w-3.5" strokeWidth={2} />
+                  {issueServiceType === EIssueServiceType.ISSUES
+                    ? t("issue.remove.parent.label")
+                    : t("issue.remove.label")}
+                </div>
+              </CustomMenu.MenuItem>
+            )}
+
+            {canEdit && (
+              <CustomMenu.MenuItem
+                onClick={() => {
+                  handleIssueCrudState("delete", parentIssueId, issue);
+                  toggleDeleteIssueModal(issue.id);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <TrashIcon className="h-3.5 w-3.5" strokeWidth={2} />
+                  <span>{t("issue.delete.label")}</span>
+                </div>
+              </CustomMenu.MenuItem>
+            )}
+          </CustomMenu>
+        </div>
+      </div>
 
       {/* should not expand the current issue if it is also the root issue*/}
       {subIssueHelpers.issue_visibility.includes(issueId) &&

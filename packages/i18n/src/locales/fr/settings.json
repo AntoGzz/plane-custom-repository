@@ -65,6 +65,50 @@
       "title": "Connexions",
       "heading": "Connexions",
       "description": "Gérez les paramètres de connexion de votre espace de travail."
+    },
+    "backup": {
+      "heading": "Sauvegardes",
+      "description": "Créez et téléchargez des instantanés de cette instance Plane, y compris la base de données et les fichiers importés.",
+      "create": "Créer une sauvegarde",
+      "creating": "Création de la sauvegarde",
+      "components": "Éléments à inclure",
+      "include_database": "Base de données",
+      "include_files": "Fichiers (MinIO / S3)",
+      "database": "Base de données",
+      "files": "Fichiers",
+      "note_label": "Note",
+      "note_placeholder": "Note facultative pour cet instantané",
+      "empty_description": "Aucune sauvegarde pour le moment. Créez-en une pour capturer la base de données et les fichiers importés.",
+      "download": "Télécharger",
+      "delete": "Supprimer",
+      "restore": "Restaurer",
+      "restoring": "Restauration",
+      "delete_title": "Supprimer cette sauvegarde ?",
+      "delete_description": "Le fichier de sauvegarde sera définitivement supprimé. Cette action est irréversible.",
+      "restore_title": "Restaurer cette sauvegarde ?",
+      "restore_description": "Cela remplace la base de données et les fichiers actuels par l’instantané. L’instance peut être indisponible jusqu’à la fin. Cette action est irréversible.",
+      "forbidden": "Seuls les administrateurs de l’instance peuvent gérer les sauvegardes.",
+      "status": {
+        "queued": "En file",
+        "processing": "En cours",
+        "completed": "Prête",
+        "failed": "Échec",
+        "restoring": "Restauration"
+      },
+      "errors": {
+        "select_component": "Sélectionnez au moins la base de données ou les fichiers."
+      },
+      "toast": {
+        "created_title": "Sauvegarde lancée",
+        "created_message": "Vous pourrez la télécharger lorsque l’instantané sera prêt.",
+        "deleted_title": "Sauvegarde supprimée",
+        "deleted_message": "L’instantané a été supprimé.",
+        "restored_title": "Restauration lancée",
+        "restored_message": "Gardez cet onglet ouvert jusqu’à la fin. Un rechargement peut être nécessaire ensuite.",
+        "error_title": "Une erreur s’est produite",
+        "error_message": "L’action de sauvegarde n’a pas pu aboutir.",
+        "download_error": "Le fichier de sauvegarde n’a pas pu être téléchargé."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Préférences",
       "notifications": "Notifications",
       "api-tokens": "Jetons d’accès personnel",
-      "connections": "Connexions"
+      "connections": "Connexions",
+      "backup": "Sauvegardes"
     },
     "tabs": {
       "summary": "Résumé",

@@ -65,6 +65,50 @@
       "title": "Connections",
       "heading": "Connections",
       "description": "Manage your workspace connections settings."
+    },
+    "backup": {
+      "heading": "Backups",
+      "description": "Create and download snapshots of this Plane instance, including the database and uploaded files.",
+      "create": "Create backup",
+      "creating": "Creating backup",
+      "components": "What to include",
+      "include_database": "Database",
+      "include_files": "Files (MinIO / S3)",
+      "database": "Database",
+      "files": "Files",
+      "note_label": "Note",
+      "note_placeholder": "Optional note for this snapshot",
+      "empty_description": "No backups yet. Create one to snapshot the database and uploaded files.",
+      "download": "Download",
+      "delete": "Delete",
+      "restore": "Restore",
+      "restoring": "Restoring",
+      "delete_title": "Delete this backup?",
+      "delete_description": "The backup file will be permanently removed. This cannot be undone.",
+      "restore_title": "Restore this backup?",
+      "restore_description": "This replaces the current database and files with the snapshot. The instance may be unavailable until restore finishes. This cannot be undone.",
+      "forbidden": "Only instance admins can manage backups.",
+      "status": {
+        "queued": "Queued",
+        "processing": "In progress",
+        "completed": "Ready",
+        "failed": "Failed",
+        "restoring": "Restoring"
+      },
+      "errors": {
+        "select_component": "Select at least the database or the files."
+      },
+      "toast": {
+        "created_title": "Backup started",
+        "created_message": "You can download it when the snapshot is ready.",
+        "deleted_title": "Backup deleted",
+        "deleted_message": "The snapshot was removed.",
+        "restored_title": "Restore started",
+        "restored_message": "Keep this tab open until the restore finishes. You may need to reload afterward.",
+        "error_title": "Something went wrong",
+        "error_message": "The backup action could not be completed.",
+        "download_error": "The backup file could not be downloaded."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferences",
       "notifications": "Notifications",
       "api-tokens": "Personal Access Tokens",
-      "connections": "Connections"
+      "connections": "Connections",
+      "backup": "Backups"
     },
     "tabs": {
       "summary": "Summary",

@@ -65,6 +65,50 @@
       "title": "连接",
       "heading": "连接",
       "description": "管理您的工作区连接设置。"
+    },
+    "backup": {
+      "heading": "备份",
+      "description": "创建并下载此 Plane 实例的快照，包括数据库和已上传的文件。",
+      "create": "创建备份",
+      "creating": "正在创建备份",
+      "components": "包含内容",
+      "include_database": "数据库",
+      "include_files": "文件（MinIO / S3）",
+      "database": "数据库",
+      "files": "文件",
+      "note_label": "备注",
+      "note_placeholder": "此快照的可选备注",
+      "empty_description": "还没有备份。创建一个以保存数据库和已上传的文件。",
+      "download": "下载",
+      "delete": "删除",
+      "restore": "还原",
+      "restoring": "正在还原",
+      "delete_title": "删除此备份？",
+      "delete_description": "备份文件将被永久删除。此操作无法撤销。",
+      "restore_title": "还原此备份？",
+      "restore_description": "这将用快照替换当前数据库和文件。完成前实例可能不可用。此操作无法撤销。",
+      "forbidden": "仅实例管理员可以管理备份。",
+      "status": {
+        "queued": "排队中",
+        "processing": "进行中",
+        "completed": "就绪",
+        "failed": "失败",
+        "restoring": "正在还原"
+      },
+      "errors": {
+        "select_component": "请至少选择数据库或文件。"
+      },
+      "toast": {
+        "created_title": "已开始备份",
+        "created_message": "快照就绪后即可下载。",
+        "deleted_title": "备份已删除",
+        "deleted_message": "快照已移除。",
+        "restored_title": "已开始还原",
+        "restored_message": "请保持此标签页打开直到完成。之后可能需要重新加载。",
+        "error_title": "出了点问题",
+        "error_message": "无法完成备份操作。",
+        "download_error": "无法下载备份文件。"
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "偏好设置",
       "notifications": "通知",
       "api-tokens": "个人访问令牌",
-      "connections": "连接"
+      "connections": "连接",
+      "backup": "备份"
     },
     "tabs": {
       "summary": "摘要",

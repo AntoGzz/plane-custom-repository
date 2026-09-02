@@ -4,15 +4,16 @@
  * See the LICENSE file for details.
  */
 
+import { useEffect } from "react";
 import { observer } from "mobx-react";
 // plane imports
-import { PROFILE_SETTINGS_TABS } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
 import type { TProfileSettingsTabs } from "@plane/types";
 // components
 import { LogoSpinner } from "@/components/common/logo-spinner";
 import { PageHead } from "@/components/core/page-title";
 import { ProfileSettingsContent } from "@/components/settings/profile/content";
+import { PROFILE_SETTINGS_PAGES_MAP } from "@/components/settings/profile/content/pages";
 import { ProfileSettingsSidebarRoot } from "@/components/settings/profile/sidebar";
 // hooks
 import { useUser } from "@/hooks/store/user";
@@ -28,8 +29,15 @@ function ProfileSettingsPage(props: Route.ComponentProps) {
   const { data: currentUser } = useUser();
   // translation
   const { t } = useTranslation();
-  // derived values
-  const isAValidTab = PROFILE_SETTINGS_TABS.includes(profileTabId as TProfileSettingsTabs);
+  // derived values — pages map is the source of truth so new tabs render even if
+  // @plane/constants dist is stale during local development.
+  const isAValidTab = profileTabId in PROFILE_SETTINGS_PAGES_MAP;
+
+  useEffect(() => {
+    if (currentUser && !isAValidTab) {
+      router.replace("/settings/profile/general");
+    }
+  }, [currentUser, isAValidTab, router]);
 
   if (!currentUser || !isAValidTab)
     return (

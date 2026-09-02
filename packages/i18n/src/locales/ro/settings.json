@@ -65,6 +65,50 @@
       "title": "Conexiuni",
       "heading": "Conexiuni",
       "description": "Gestionează setările conexiunilor spațiului tău de lucru."
+    },
+    "backup": {
+      "heading": "Copii de rezervă",
+      "description": "Creează și descarcă instantanee ale acestei instanțe Plane, inclusiv baza de date și fișierele încărcate.",
+      "create": "Creează copie de rezervă",
+      "creating": "Se creează copia de rezervă",
+      "components": "Ce să incluzi",
+      "include_database": "Bază de date",
+      "include_files": "Fișiere (MinIO / S3)",
+      "database": "Bază de date",
+      "files": "Fișiere",
+      "note_label": "Notă",
+      "note_placeholder": "Notă opțională pentru acest instantaneu",
+      "empty_description": "Nu există încă copii de rezervă. Creează una pentru a salva baza de date și fișierele încărcate.",
+      "download": "Descarcă",
+      "delete": "Șterge",
+      "restore": "Restaurează",
+      "restoring": "Se restaurează",
+      "delete_title": "Ștergi această copie de rezervă?",
+      "delete_description": "Fișierul copiei de rezervă va fi eliminat definitiv. Acțiunea nu poate fi anulată.",
+      "restore_title": "Restaurezi această copie de rezervă?",
+      "restore_description": "Aceasta înlocuiește baza de date și fișierele curente cu instantaneul. Instanța poate fi indisponibilă până la finalizare. Acțiunea nu poate fi anulată.",
+      "forbidden": "Doar administratorii instanței pot gestiona copiile de rezervă.",
+      "status": {
+        "queued": "În coadă",
+        "processing": "În curs",
+        "completed": "Gata",
+        "failed": "Eșuat",
+        "restoring": "Se restaurează"
+      },
+      "errors": {
+        "select_component": "Selectează cel puțin baza de date sau fișierele."
+      },
+      "toast": {
+        "created_title": "Copia de rezervă a început",
+        "created_message": "O poți descărca când instantaneul este gata.",
+        "deleted_title": "Copie de rezervă ștearsă",
+        "deleted_message": "Instantaneul a fost eliminat.",
+        "restored_title": "Restaurarea a început",
+        "restored_message": "Păstrează această filă deschisă până la finalizare. Este posibil să fie nevoie să reîncarci pagina.",
+        "error_title": "A apărut o eroare",
+        "error_message": "Acțiunea de copie de rezervă nu a putut fi finalizată.",
+        "download_error": "Fișierul copiei de rezervă nu a putut fi descărcat."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferințe",
       "notifications": "Notificări",
       "api-tokens": "Tokenuri de acces personale",
-      "connections": "Conexiuni"
+      "connections": "Conexiuni",
+      "backup": "Copii de rezervă"
     },
     "tabs": {
       "summary": "Sumar",

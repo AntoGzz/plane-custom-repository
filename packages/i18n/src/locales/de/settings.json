@@ -65,6 +65,50 @@
       "title": "Verbindungen",
       "heading": "Verbindungen",
       "description": "Verwalten Sie Ihre Arbeitsbereich-Verbindungseinstellungen."
+    },
+    "backup": {
+      "heading": "Backups",
+      "description": "Erstellen und laden Sie Snapshots dieser Plane-Instanz herunter, einschließlich Datenbank und hochgeladener Dateien.",
+      "create": "Backup erstellen",
+      "creating": "Backup wird erstellt",
+      "components": "Was einbezogen werden soll",
+      "include_database": "Datenbank",
+      "include_files": "Dateien (MinIO / S3)",
+      "database": "Datenbank",
+      "files": "Dateien",
+      "note_label": "Hinweis",
+      "note_placeholder": "Optionaler Hinweis zu diesem Snapshot",
+      "empty_description": "Noch keine Backups. Erstellen Sie eines, um die Datenbank und hochgeladene Dateien zu sichern.",
+      "download": "Herunterladen",
+      "delete": "Löschen",
+      "restore": "Wiederherstellen",
+      "restoring": "Wird wiederhergestellt",
+      "delete_title": "Dieses Backup löschen?",
+      "delete_description": "Die Backup-Datei wird dauerhaft entfernt. Dies kann nicht rückgängig gemacht werden.",
+      "restore_title": "Dieses Backup wiederherstellen?",
+      "restore_description": "Dadurch werden die aktuelle Datenbank und die Dateien durch den Snapshot ersetzt. Die Instanz kann bis zum Abschluss nicht verfügbar sein. Dies kann nicht rückgängig gemacht werden.",
+      "forbidden": "Nur Instanzadministratoren können Backups verwalten.",
+      "status": {
+        "queued": "In Warteschlange",
+        "processing": "In Bearbeitung",
+        "completed": "Bereit",
+        "failed": "Fehlgeschlagen",
+        "restoring": "Wird wiederhergestellt"
+      },
+      "errors": {
+        "select_component": "Wählen Sie mindestens die Datenbank oder die Dateien aus."
+      },
+      "toast": {
+        "created_title": "Backup gestartet",
+        "created_message": "Sie können es herunterladen, sobald der Snapshot bereit ist.",
+        "deleted_title": "Backup gelöscht",
+        "deleted_message": "Der Snapshot wurde entfernt.",
+        "restored_title": "Wiederherstellung gestartet",
+        "restored_message": "Lassen Sie diesen Tab geöffnet, bis die Wiederherstellung abgeschlossen ist. Danach muss die Seite möglicherweise neu geladen werden.",
+        "error_title": "Etwas ist schiefgelaufen",
+        "error_message": "Die Backup-Aktion konnte nicht abgeschlossen werden.",
+        "download_error": "Die Backup-Datei konnte nicht heruntergeladen werden."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Einstellungen",
       "notifications": "Benachrichtigungen",
       "api-tokens": "Persönliche Zugriffstoken",
-      "connections": "Verbindungen"
+      "connections": "Verbindungen",
+      "backup": "Backups"
     },
     "tabs": {
       "summary": "Zusammenfassung",

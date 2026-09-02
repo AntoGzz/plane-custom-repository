@@ -55,12 +55,13 @@ export const useWorkItemCommentOperations = (
             sequenceId: issueDetails.sequence_id,
           });
           const commentLink = `${workItemLink}#comment-${id}`;
-          copyUrlToClipboard(commentLink).then(() => {
+          void copyUrlToClipboard(commentLink).then(() => {
             setToast({
               title: t("common.success"),
               type: TOAST_TYPE.SUCCESS,
               message: t("issue.comments.copy_link.success"),
             });
+            return true;
           });
         } catch (error) {
           console.error("Error in copying comment link:", error);
@@ -129,7 +130,7 @@ export const useWorkItemCommentOperations = (
           const res = await uploadEditorAsset({
             blockId,
             data: {
-              entity_identifier: commentId ?? "",
+              entity_identifier: commentId || undefined,
               entity_type: EFileAssetType.COMMENT_DESCRIPTION,
             },
             file,
@@ -139,7 +140,7 @@ export const useWorkItemCommentOperations = (
           return res;
         } catch (error) {
           console.log("Error in uploading comment asset:", error);
-          throw new Error(t("issue.comments.upload.error"));
+          throw new Error(t("issue.comments.upload.error"), { cause: error });
         }
       },
       duplicateCommentAsset: async (assetId, commentId) => {
@@ -210,7 +211,26 @@ export const useWorkItemCommentOperations = (
       },
     };
     return ops;
-  }, [workspaceSlug, projectId, issueId, createComment, updateComment, uploadEditorAsset, removeComment]);
+  }, [
+    commentReactionsByUser,
+    createComment,
+    createCommentReaction,
+    currentUser,
+    duplicateEditorAsset,
+    getCommentReactionById,
+    getCommentReactionsByCommentId,
+    getUserDetails,
+    issueDetails,
+    issueId,
+    projectDetails?.identifier,
+    projectId,
+    removeComment,
+    removeCommentReaction,
+    t,
+    updateComment,
+    uploadEditorAsset,
+    workspaceSlug,
+  ]);
 
   return operations;
 };

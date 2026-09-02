@@ -28,6 +28,22 @@ from plane.bgtasks.storage_metadata_task import get_asset_object_metadata
 from plane.throttles.asset import AssetRateThrottle
 
 
+def _normalize_entity_id(entity_id):
+    """Skip empty identifiers so FileAsset FKs stay NULL until bulk-associate."""
+    if entity_id in (None, False, ""):
+        return None
+    entity_id = str(entity_id).strip()
+    return entity_id or None
+
+
+def _display_disposition(asset):
+    """Inline for images; attachment for script-capable types (SVG) to avoid XSS."""
+    asset_mime_type = ((asset.attributes or {}).get("type") or "").split(";")[0].strip().lower()
+    if asset_mime_type in settings.SCRIPT_CAPABLE_MIME_TYPES:
+        return "attachment"
+    return "inline"
+
+
 class UserAssetsV2Endpoint(BaseAPIView):
     """This endpoint is used to upload user profile images."""
 
@@ -204,6 +220,10 @@ class WorkspaceFileAssetEndpoint(BaseAPIView):
     """This endpoint is used to upload cover images/logos etc for workspace, projects and users."""
 
     def get_entity_id_field(self, entity_type, entity_id):
+        entity_id = _normalize_entity_id(entity_id)
+        if not entity_id:
+            return {}
+
         # Workspace Logo
         if entity_type == FileAsset.EntityTypeContext.WORKSPACE_LOGO:
             return {"workspace_id": entity_id}
@@ -481,7 +501,7 @@ class WorkspaceFileAssetEndpoint(BaseAPIView):
         # Generate a presigned URL to share an S3 object
         signed_url = storage.generate_presigned_url(
             object_name=asset.asset.name,
-            disposition="attachment",
+            disposition=_display_disposition(asset),
             filename=asset.attributes.get("name"),
         )
         # Redirect to the signed URL
@@ -520,14 +540,10 @@ class StaticFileAssetEndpoint(BaseAPIView):
         # Force attachment disposition for script-capable MIME types to prevent
         # same-origin XSS when assets are served on the application's origin.
         storage = S3Storage(request=request)
-        asset_mime_type = (asset.attributes.get("type") or "").split(";")[0].strip().lower()
-        disposition = (
-            "attachment" if asset_mime_type in settings.SCRIPT_CAPABLE_MIME_TYPES else "inline"
-        )
         # Generate a presigned URL to share an S3 object
         signed_url = storage.generate_presigned_url(
             object_name=asset.asset.name,
-            disposition=disposition,
+            disposition=_display_disposition(asset),
         )
         # Redirect to the signed URL
         return HttpResponseRedirect(signed_url)
@@ -549,6 +565,10 @@ class ProjectAssetEndpoint(BaseAPIView):
     """This endpoint is used to upload cover images/logos etc for workspace, projects and users."""
 
     def get_entity_id_field(self, entity_type, entity_id):
+        entity_id = _normalize_entity_id(entity_id)
+        if not entity_id:
+            return {}
+
         if entity_type == FileAsset.EntityTypeContext.WORKSPACE_LOGO:
             return {"workspace_id": entity_id}
 
@@ -688,7 +708,7 @@ class ProjectAssetEndpoint(BaseAPIView):
         # Generate a presigned URL to share an S3 object
         signed_url = storage.generate_presigned_url(
             object_name=asset.asset.name,
-            disposition="attachment",
+            disposition=_display_disposition(asset),
             filename=asset.attributes.get("name"),
         )
         # Redirect to the signed URL
@@ -780,6 +800,10 @@ class DuplicateAssetEndpoint(BaseAPIView):
     throttle_classes = [AssetRateThrottle]
 
     def get_entity_id_field(self, entity_type, entity_id):
+        entity_id = _normalize_entity_id(entity_id)
+        if not entity_id:
+            return {}
+
         # Workspace Logo
         if entity_type == FileAsset.EntityTypeContext.WORKSPACE_LOGO:
             return {"workspace_id": entity_id}

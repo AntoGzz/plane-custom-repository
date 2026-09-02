@@ -20,10 +20,18 @@ class SessionMiddleware(MiddlewareMixin):
         self.SessionStore = engine.SessionStore
 
     def process_request(self, request):
-        if "instances" in request.path:
-            session_key = request.COOKIES.get(settings.ADMIN_SESSION_COOKIE_NAME)
+        # God mode uses admin-session-id for /api/instances/*. The web app keeps
+        # session-id. Instance-admin tools hosted in the web app (e.g. backups)
+        # must fall back to the app session or they 401 as anonymous.
+        is_instance_path = "instances" in request.path
+        admin_key = request.COOKIES.get(settings.ADMIN_SESSION_COOKIE_NAME) if is_instance_path else None
+        app_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+        if admin_key:
+            session_key = admin_key
+            request._plane_session_cookie_name = settings.ADMIN_SESSION_COOKIE_NAME
         else:
-            session_key = request.COOKIES.get(settings.SESSION_COOKIE_NAME)
+            session_key = app_key
+            request._plane_session_cookie_name = settings.SESSION_COOKIE_NAME
         request.session = self.SessionStore(session_key)
 
     def process_response(self, request, response):
@@ -40,8 +48,8 @@ class SessionMiddleware(MiddlewareMixin):
             return response
         # First check if we need to delete this cookie.
         # The session should be deleted only if the session is entirely empty.
-        is_admin_path = "instances" in request.path
-        cookie_name = settings.ADMIN_SESSION_COOKIE_NAME if is_admin_path else settings.SESSION_COOKIE_NAME
+        cookie_name = getattr(request, "_plane_session_cookie_name", settings.SESSION_COOKIE_NAME)
+        is_admin_cookie = cookie_name == settings.ADMIN_SESSION_COOKIE_NAME
 
         if cookie_name in request.COOKIES and empty:
             response.delete_cookie(
@@ -60,7 +68,7 @@ class SessionMiddleware(MiddlewareMixin):
                     expires = None
                 else:
                     # Use different max_age based on whether it's an admin cookie
-                    if is_admin_path:
+                    if is_admin_cookie:
                         max_age = settings.ADMIN_SESSION_COOKIE_AGE
                     else:
                         max_age = request.session.get_expiry_age()

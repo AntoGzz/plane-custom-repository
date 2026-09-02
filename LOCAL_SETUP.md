@@ -2,6 +2,8 @@
 
 Guía práctica para levantar este monorepo en desarrollo con los puertos de este entorno (`8700`–`8704`).
 
+Para **reinstalar o reconfigurar WSL** (Docker Desktop, nvm, scripts de autostart, Apoteca + Plane): [WSL_SETUP.md](./WSL_SETUP.md).
+
 ## Requisitos
 
 - Docker Engine en marcha
@@ -147,12 +149,19 @@ UI: `http://localhost:8700/{workspace}/settings/integrations`
 
 ## Arranque día a día
 
-Con el setup ya hecho:
+Con el setup ya hecho, Docker (`unless-stopped`) y los frontends se mantienen solos (como Apoteca PHP `:8888`). Al abrir una terminal WSL se relanzan si hace falta.
+
+```bash
+/home/devdavid/bin/plane-dev-start   # idempotente; huérfano de la TTY
+# log: ${XDG_RUNTIME_DIR:-/tmp}/plane-dev.log
+```
+
+Manual (si no usas el script):
 
 ```bash
 # Terminal 1
 cd /home/devdavid/proyectos/plane
-docker compose -f docker-compose-local.yml up
+docker compose -f docker-compose-local.yml up -d
 
 # Terminal 2
 cd /home/devdavid/proyectos/plane
@@ -177,7 +186,7 @@ pnpm dev
 ## Parar
 
 ```bash
-# Ctrl+C en pnpm dev
+/home/devdavid/bin/plane-dev-stop
 docker compose -f docker-compose-local.yml down
 ```
 

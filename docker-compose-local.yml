@@ -1,6 +1,7 @@
 services:
   plane-redis:
     image: valkey/valkey:7.2.11-alpine
+    container_name: plane-redis
     restart: unless-stopped
     networks:
       - dev_env
@@ -11,6 +12,7 @@ services:
 
   plane-mq:
     image: rabbitmq:3.13.6-management-alpine
+    container_name: plane-mq
     restart: unless-stopped
     networks:
       - dev_env
@@ -25,6 +27,7 @@ services:
 
   plane-minio:
     image: minio/minio
+    container_name: plane-minio
     restart: unless-stopped
     networks:
       - dev_env
@@ -50,6 +53,7 @@ services:
 
   plane-db:
     image: postgres:15.7-alpine
+    container_name: plane-db
     restart: unless-stopped
     networks:
       - dev_env
@@ -69,6 +73,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+    container_name: plane-api
     restart: unless-stopped
     networks:
       - dev_env
@@ -90,6 +95,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+    container_name: plane-worker
     restart: unless-stopped
     networks:
       - dev_env
@@ -109,6 +115,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+    container_name: plane-beat-worker
     restart: unless-stopped
     networks:
       - dev_env
@@ -128,6 +135,7 @@ services:
       dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
+    container_name: plane-migrator
     restart: "no"
     networks:
       - dev_env

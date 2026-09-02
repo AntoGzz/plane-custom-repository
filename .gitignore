@@ -138,3 +138,6 @@ apps/*/.env.local
 # Local-only scripts at repo root (keep packages/i18n/scripts)
 scripts/
 !packages/i18n/scripts/
+
+# Instance backups created from profile settings
+apps/api/backups/

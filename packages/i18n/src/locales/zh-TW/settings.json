@@ -65,6 +65,50 @@
       "title": "連接",
       "heading": "連接",
       "description": "管理您的工作區連接設定。"
+    },
+    "backup": {
+      "heading": "備份",
+      "description": "建立並下載此 Plane 執行個體的快照，包括資料庫和已上傳的檔案。",
+      "create": "建立備份",
+      "creating": "正在建立備份",
+      "components": "要包含的內容",
+      "include_database": "資料庫",
+      "include_files": "檔案（MinIO / S3）",
+      "database": "資料庫",
+      "files": "檔案",
+      "note_label": "備註",
+      "note_placeholder": "此快照的選用備註",
+      "empty_description": "尚無備份。建立一個以儲存資料庫和已上傳的檔案。",
+      "download": "下載",
+      "delete": "刪除",
+      "restore": "還原",
+      "restoring": "正在還原",
+      "delete_title": "刪除此備份？",
+      "delete_description": "備份檔案將永久移除。此動作無法復原。",
+      "restore_title": "還原此備份？",
+      "restore_description": "這會以快照取代目前的資料庫和檔案。完成前執行個體可能無法使用。此動作無法復原。",
+      "forbidden": "僅執行個體管理員可以管理備份。",
+      "status": {
+        "queued": "排隊中",
+        "processing": "進行中",
+        "completed": "就緒",
+        "failed": "失敗",
+        "restoring": "正在還原"
+      },
+      "errors": {
+        "select_component": "請至少選取資料庫或檔案。"
+      },
+      "toast": {
+        "created_title": "已開始備份",
+        "created_message": "快照就緒後即可下載。",
+        "deleted_title": "備份已刪除",
+        "deleted_message": "快照已移除。",
+        "restored_title": "已開始還原",
+        "restored_message": "請保持此分頁開啟直到完成。之後可能需要重新載入。",
+        "error_title": "發生問題",
+        "error_message": "無法完成備份動作。",
+        "download_error": "無法下載備份檔案。"
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "偏好設定",
       "notifications": "通知",
       "api-tokens": "個人存取權杖",
-      "connections": "連接"
+      "connections": "連接",
+      "backup": "備份"
     },
     "tabs": {
       "summary": "摘要",

@@ -8,6 +8,12 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 dotenv.config({ path: path.resolve(__dirname, ".env") });
+// MinIO signing host must match apps/api/.env AWS_S3_SIGNING_ENDPOINT_URL
+dotenv.config({ path: path.resolve(__dirname, "../api/.env") });
+
+const MINIO_SIGNING_HOST = (process.env.AWS_S3_SIGNING_ENDPOINT_URL ?? "http://localhost:8700")
+  .replace(/^https?:\/\//, "")
+  .replace(/\/$/, "");
 
 const HOP_BY_HOP = new Set([
   "connection",
@@ -41,10 +47,22 @@ function proxyRequest(opts: {
   changeOrigin: boolean;
   req: IncomingMessage;
   res: ServerResponse;
+  /** Force the Host header (SigV4 for MinIO is signed against this host). */
+  hostOverride?: string;
+  /** Preserve the browser Host for upstream (e.g. Django origin detection). */
+  forwardClientHost?: boolean;
 }) {
-  const { hostname, port, changeOrigin, req, res } = opts;
+  const { hostname, port, changeOrigin, req, res, hostOverride, forwardClientHost } = opts;
   const headers = filterRequestHeaders(req.headers);
-  if (changeOrigin) headers.host = `${hostname}:${port}`;
+  if (hostOverride) {
+    headers.host = hostOverride;
+  } else if (changeOrigin) {
+    headers.host = `${hostname}:${port}`;
+  }
+  if (forwardClientHost && req.headers.host) {
+    headers["x-forwarded-host"] = req.headers.host;
+    headers["x-forwarded-proto"] = req.headers["x-forwarded-proto"] ?? "http";
+  }
 
   const proxyReq = http.request({ hostname, port, path: req.url, method: req.method, headers }, (proxyRes) => {
     const outHeaders = { ...proxyRes.headers };
@@ -80,11 +98,27 @@ function planeBackendProxy(): Plugin {
       server.middlewares.use((req, res, next) => {
         const url = req.url ?? "";
         if (url.startsWith("/api") || url.startsWith("/auth")) {
-          proxyRequest({ hostname: "127.0.0.1", port: 8704, changeOrigin: true, req, res });
+          proxyRequest({
+            hostname: "127.0.0.1",
+            port: 8704,
+            changeOrigin: true,
+            forwardClientHost: true,
+            req,
+            res,
+          });
           return;
         }
         if (url.startsWith("/uploads")) {
-          proxyRequest({ hostname: "127.0.0.1", port: 8790, changeOrigin: false, req, res });
+          // SigV4 is signed against AWS_S3_SIGNING_ENDPOINT_URL; normalize Host for
+          // both Dev Tunnel and localhost:8700 entry points.
+          proxyRequest({
+            hostname: "127.0.0.1",
+            port: 8790,
+            changeOrigin: false,
+            hostOverride: MINIO_SIGNING_HOST,
+            req,
+            res,
+          });
           return;
         }
         next();
@@ -125,6 +159,8 @@ export default defineConfig(() => ({
   server: {
     // Keep in sync with APP_BASE_URL / CORS (localhost, not only 127.0.0.1)
     host: "localhost",
+    port: 8700,
+    strictPort: true,
     // Dev Tunnels forward with the public hostname
     allowedHosts: [".use2.devtunnels.ms", ".devtunnels.ms", "localhost", "127.0.0.1"],
     // Same-origin /api /auth /uploads proxy lives in planeBackendProxy()

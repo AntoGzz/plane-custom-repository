@@ -68,7 +68,7 @@ Getting started with Plane is simple. Choose the setup that works best for you:
 
 ## 🛠️ Local development
 
-See [LOCAL_SETUP.md](./LOCAL_SETUP.md) (arranque con puertos 8700–8704) and [CONTRIBUTING](./CONTRIBUTING.md).
+See [LOCAL_SETUP.md](./LOCAL_SETUP.md) (arranque con puertos 8700–8704), [WSL_SETUP.md](./WSL_SETUP.md) (reconfigurar WSL desde cero) and [CONTRIBUTING](./CONTRIBUTING.md).
 
 ## ⚙️ Built with
 

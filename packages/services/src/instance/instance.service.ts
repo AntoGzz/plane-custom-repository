@@ -13,6 +13,8 @@ import type {
   IInstanceConfiguration,
   IInstanceInfo,
   TPage,
+  IInstanceBackup,
+  IInstanceBackupCreatePayload,
 } from "@plane/types";
 // api service
 import { APIService } from "../api.service";
@@ -140,5 +142,57 @@ export class InstanceService extends APIService {
       .catch((error) => {
         throw error?.response?.data;
       });
+  }
+
+  async listBackups(): Promise<IInstanceBackup[]> {
+    return this.get("/api/instances/backups/")
+      .then((response) => response.data)
+      .catch((error) => {
+        throw this.wrapBackupError(error);
+      });
+  }
+
+  async createBackup(data: IInstanceBackupCreatePayload): Promise<IInstanceBackup> {
+    return this.post("/api/instances/backups/", data)
+      .then((response) => response.data)
+      .catch((error) => {
+        throw this.wrapBackupError(error);
+      });
+  }
+
+  async deleteBackup(backupId: string): Promise<void> {
+    return this.delete(`/api/instances/backups/${backupId}/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw this.wrapBackupError(error);
+      });
+  }
+
+  async restoreBackup(backupId: string): Promise<IInstanceBackup> {
+    return this.post(`/api/instances/backups/${backupId}/restore/`)
+      .then((response) => response.data)
+      .catch((error) => {
+        throw this.wrapBackupError(error);
+      });
+  }
+
+  async downloadBackup(backupId: string): Promise<Blob> {
+    return this.get(`/api/instances/backups/${backupId}/download/`, { responseType: "blob" })
+      .then((response) => response.data)
+      .catch((error) => {
+        throw this.wrapBackupError(error);
+      });
+  }
+
+  private wrapBackupError(error: { response?: { data?: unknown; status?: number } }) {
+    const payload =
+      error?.response?.data && typeof error.response.data === "object" && !Array.isArray(error.response.data)
+        ? (error.response.data as Record<string, unknown>)
+        : {};
+    const message =
+      (typeof payload.error === "string" && payload.error) ||
+      (typeof payload.detail === "string" && payload.detail) ||
+      undefined;
+    return { ...payload, error: message, status: error?.response?.status };
   }
 }

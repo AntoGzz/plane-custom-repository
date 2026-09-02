@@ -12,7 +12,7 @@ import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import type { FC } from "react";
 import { CalendarDays, LayersIcon, Paperclip } from "lucide-react";
 // plane types
-import { EIconSize, ISSUE_PRIORITIES, STATE_GROUPS } from "@plane/constants";
+import { ALL_ISSUES, EIconSize, ISSUE_GROUP_BY_OPTIONS, ISSUE_PRIORITIES, STATE_GROUPS } from "@plane/constants";
 import { Logo } from "@plane/propel/emoji-icon-picker";
 import type { ISvgIcons } from "@plane/propel/icons";
 import {
@@ -53,8 +53,6 @@ import { renderFormattedDate, getFileURL } from "@plane/utils";
 import { store } from "@/lib/store-context";
 import { ISSUE_FILTER_DEFAULT_DATA } from "@/store/issue/helpers/base-issues.store";
 import { DEFAULT_DISPLAY_PROPERTIES } from "@/store/issue/issue-details/sub_issues_filter.store";
-// constants
-import { ISSUE_GROUP_BY_OPTIONS } from "@plane/constants";
 // components
 import {
   SpreadsheetAssigneeColumn,
@@ -122,11 +120,11 @@ export const getGroupByColumns = ({
   isEpic = false,
   projectId,
 }: TGetGroupByColumns): IGroupByColumn[] | undefined => {
-  // If no groupBy is specified and includeNone is true, return "All Issues" group
+  // If no groupBy is specified and includeNone is true, return the ungrouped column
   if (!groupBy && includeNone) {
     return [
       {
-        id: "All Issues",
+        id: ALL_ISSUES,
         name: `All ${isEpic ? "Epics" : "work items"}`,
         payload: {},
         icon: undefined,

@@ -61,12 +61,16 @@ export const SubIssuesCollapsibleContent = observer(function SubIssuesCollapsibl
   const {
     toggleCreateIssueModal,
     toggleDeleteIssueModal,
-    subIssues: { subIssueHelpersByIssueId, setSubIssueHelpers },
+    subIssues: { subIssueHelpersByIssueId, setSubIssueHelpers, subIssuesByIssueId },
   } = useIssueDetail(issueServiceType);
 
   // helpers
   const subIssueOperations = useSubIssueOperations(issueServiceType);
   const subIssueHelpers = subIssueHelpersByIssueId(`${parentIssueId}_root`);
+  const existingSubIssueIds = subIssuesByIssueId(parentIssueId);
+  const shouldShowList =
+    subIssueHelpers.issue_visibility.includes(parentIssueId) ||
+    (!!existingSubIssueIds && existingSubIssueIds.length > 0);
 
   // handler
   const handleIssueCrudState = useCallback(
@@ -93,7 +97,7 @@ export const SubIssuesCollapsibleContent = observer(function SubIssuesCollapsibl
       } catch (error) {
         console.error("Error fetching sub-work items:", error);
       } finally {
-        setSubIssueHelpers(`${parentIssueId}_root`, "preview_loader", "");
+        setSubIssueHelpers(`${parentIssueId}_root`, "preview_loader", parentIssueId);
       }
     }
   }, [parentIssueId, projectId, setSubIssueHelpers, subIssueHelpersByIssueId, subIssueOperations, workspaceSlug]);
@@ -114,7 +118,7 @@ export const SubIssuesCollapsibleContent = observer(function SubIssuesCollapsibl
 
   return (
     <>
-      {subIssueHelpers.issue_visibility.includes(parentIssueId) && (
+      {shouldShowList && (
         <SubIssuesListRoot
           storeType={EIssuesStoreType.PROJECT}
           workspaceSlug={workspaceSlug}

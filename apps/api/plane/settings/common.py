@@ -361,6 +361,7 @@ CELERY_IMPORTS = (
     "plane.bgtasks.slack_notify_task",
     "plane.bgtasks.slack_create_issue_task",
     "plane.bgtasks.github_webhook_task",
+    "plane.license.bgtasks.backup_task",
 )
 
 FILE_SIZE_LIMIT = int(os.environ.get("FILE_SIZE_LIMIT", 5242880))
@@ -465,6 +466,9 @@ WEBHOOK_LOG_RETENTION_DAYS = _retention_days("WEBHOOK_LOG_RETENTION_DAYS", 14)
 
 # Email notification logs are retained on their own window.
 EMAIL_LOG_RETENTION_DAYS = _retention_days("EMAIL_LOG_RETENTION_DAYS", 7)
+
+# Local directory for instance backups created from profile settings.
+BACKUPS_DIR = os.environ.get("BACKUPS_DIR") or os.path.join(os.path.dirname(BASE_DIR), "backups")
 
 # Instance Changelog URL
 INSTANCE_CHANGELOG_URL = os.environ.get("INSTANCE_CHANGELOG_URL", "")

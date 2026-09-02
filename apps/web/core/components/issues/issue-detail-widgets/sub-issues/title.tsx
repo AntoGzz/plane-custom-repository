@@ -29,17 +29,18 @@ export const SubIssuesCollapsibleTitle = observer(function SubIssuesCollapsibleT
   const { t } = useTranslation();
   // store hooks
   const {
+    issue: { getIssueById },
     subIssues: { subIssuesByIssueId, stateDistributionByIssueId },
   } = useIssueDetail(issueServiceType);
   // derived values
+  const parentIssue = getIssueById(parentIssueId);
   const subIssuesDistribution = stateDistributionByIssueId(parentIssueId);
   const subIssues = subIssuesByIssueId(parentIssueId);
-  // if there are no sub-issues, return null
-  if (!subIssues) return null;
+  const totalCount = subIssues?.length ?? parentIssue?.sub_issues_count ?? 0;
+  if (!subIssues && totalCount === 0) return null;
 
   // calculate percentage of completed sub-issues
   const completedCount = subIssuesDistribution?.completed?.length ?? 0;
-  const totalCount = subIssues.length;
   const percentage = completedCount && totalCount ? (completedCount / totalCount) * 100 : 0;
 
   return (

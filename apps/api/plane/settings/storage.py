@@ -9,7 +9,7 @@ import uuid
 # Third party imports
 import boto3
 from botocore.exceptions import ClientError
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 
 # Module imports
 from plane.utils.exception_logger import log_exception
@@ -23,6 +23,7 @@ class S3Storage(S3Boto3Storage):
     """S3 storage class to generate presigned URLs for S3 objects"""
 
     def __init__(self, request=None):
+        self._request = request
         # Get the AWS credentials and bucket name from the environment
         self.aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
         # Use the AWS_SECRET_ACCESS_KEY environment variable for the secret key
@@ -40,6 +41,7 @@ class S3Storage(S3Boto3Storage):
         # localhost), sign against AWS_S3_SIGNING_ENDPOINT_URL and rewrite the URL.
         self._signing_endpoint = None
         self._browser_endpoint = None
+        self._browser_endpoint_local = None
 
         if os.environ.get("USE_MINIO") == "1":
             # Determine protocol based on environment variable
@@ -47,9 +49,12 @@ class S3Storage(S3Boto3Storage):
                 endpoint_protocol = "https"
             else:
                 endpoint_protocol = request.scheme if request else "http"
-            # Browser-facing URL (Vite proxies /uploads → MinIO).
+            # Browser-facing URLs: tunnel (remoto) and local (misma máquina).
             browser_endpoint = os.environ.get("AWS_S3_BROWSER_ENDPOINT_URL") or os.environ.get(
                 "MINIO_BROWSER_ENDPOINT_URL"
+            )
+            browser_endpoint_local = os.environ.get("AWS_S3_BROWSER_ENDPOINT_URL_LOCAL") or os.environ.get(
+                "MINIO_BROWSER_ENDPOINT_URL_LOCAL"
             )
             signing_endpoint = os.environ.get("AWS_S3_SIGNING_ENDPOINT_URL") or os.environ.get(
                 "MINIO_SIGNING_ENDPOINT_URL"
@@ -60,6 +65,11 @@ class S3Storage(S3Boto3Storage):
                 self._browser_endpoint = f"{endpoint_protocol}://{request.get_host()}"
             else:
                 self._browser_endpoint = (self.aws_s3_endpoint_url or "").rstrip("/") or None
+
+            if browser_endpoint_local:
+                self._browser_endpoint_local = browser_endpoint_local.rstrip("/")
+            else:
+                self._browser_endpoint_local = "http://localhost:8700"
 
             if signing_endpoint:
                 self._signing_endpoint = signing_endpoint.rstrip("/")
@@ -87,13 +97,51 @@ class S3Storage(S3Boto3Storage):
                 config=boto3.session.Config(signature_version="s3v4"),
             )
 
+    def _client_browser_endpoint(self):
+        """Return tunnel or local browser base URL depending on how the client reached the app."""
+        if self._request:
+            hints = " ".join(
+                filter(
+                    None,
+                    [
+                        self._request.headers.get("Origin"),
+                        self._request.headers.get("Referer"),
+                        self._request.headers.get("X-Forwarded-Host"),
+                    ],
+                )
+            ).lower()
+            if hints and ("localhost" in hints or "127.0.0.1" in hints):
+                return self._browser_endpoint_local or self._browser_endpoint
+            if hints and self._browser_endpoint:
+                return self._browser_endpoint
+        if self._browser_endpoint:
+            return self._browser_endpoint
+        return self._browser_endpoint_local
+
     def _rewrite_browser_url(self, url):
-        """Swap signing host for the public browser host without resigning."""
-        if not url or not self._signing_endpoint or not self._browser_endpoint:
+        """Rewrite presigned URLs for browser access via the Vite /uploads proxy."""
+        if not url:
             return url
-        if self._signing_endpoint == self._browser_endpoint:
+
+        parsed = urlparse(url)
+        if not parsed.path:
             return url
-        return url.replace(self._signing_endpoint, self._browser_endpoint, 1)
+
+        relative = f"{parsed.path}?{parsed.query}" if parsed.query else parsed.path
+
+        if os.environ.get("USE_MINIO") != "1" or not self._signing_endpoint:
+            if not self._signing_endpoint or not self._browser_endpoint:
+                return url
+            if self._signing_endpoint == self._browser_endpoint:
+                return url
+            return url.replace(self._signing_endpoint, self._browser_endpoint, 1)
+
+        # Relative /uploads/... works for tunnel and localhost (same origin).
+        if os.environ.get("AWS_S3_USE_RELATIVE_URLS", "1") == "1":
+            return relative
+
+        browser = self._client_browser_endpoint()
+        return f"{browser}{relative}" if browser else relative
 
     def generate_presigned_post(self, object_name, file_type, file_size, expiration=None):
         """Generate a presigned URL to upload an S3 object"""

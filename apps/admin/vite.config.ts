@@ -37,6 +37,8 @@ export default defineConfig(() => ({
   server: {
     // Keep in sync with ADMIN_BASE_URL / CORS (localhost, not only 127.0.0.1)
     host: "localhost",
+    port: 8701,
+    strictPort: true,
   },
   // No SSR-specific overrides needed; alias resolves to ESM build
 }));

@@ -65,6 +65,50 @@
       "title": "Connessioni",
       "heading": "Connessioni",
       "description": "Gestisci le impostazioni delle connessioni del tuo spazio di lavoro."
+    },
+    "backup": {
+      "heading": "Backup",
+      "description": "Crea e scarica snapshot di questa istanza di Plane, inclusi il database e i file caricati.",
+      "create": "Crea backup",
+      "creating": "Creazione del backup",
+      "components": "Cosa includere",
+      "include_database": "Database",
+      "include_files": "File (MinIO / S3)",
+      "database": "Database",
+      "files": "File",
+      "note_label": "Nota",
+      "note_placeholder": "Nota facoltativa per questo snapshot",
+      "empty_description": "Nessun backup. Creane uno per salvare il database e i file caricati.",
+      "download": "Scarica",
+      "delete": "Elimina",
+      "restore": "Ripristina",
+      "restoring": "Ripristino",
+      "delete_title": "Eliminare questo backup?",
+      "delete_description": "Il file di backup verrà rimosso in modo permanente. L’operazione non può essere annullata.",
+      "restore_title": "Ripristinare questo backup?",
+      "restore_description": "Questo sostituisce il database e i file attuali con lo snapshot. L’istanza potrebbe non essere disponibile fino al termine. L’operazione non può essere annullata.",
+      "forbidden": "Solo gli amministratori dell’istanza possono gestire i backup.",
+      "status": {
+        "queued": "In coda",
+        "processing": "In corso",
+        "completed": "Pronto",
+        "failed": "Non riuscito",
+        "restoring": "Ripristino"
+      },
+      "errors": {
+        "select_component": "Seleziona almeno il database o i file."
+      },
+      "toast": {
+        "created_title": "Backup avviato",
+        "created_message": "Potrai scaricarlo quando lo snapshot sarà pronto.",
+        "deleted_title": "Backup eliminato",
+        "deleted_message": "Lo snapshot è stato rimosso.",
+        "restored_title": "Ripristino avviato",
+        "restored_message": "Tieni aperta questa scheda fino al termine. Potrebbe essere necessario ricaricare.",
+        "error_title": "Si è verificato un errore",
+        "error_message": "Impossibile completare l’azione di backup.",
+        "download_error": "Impossibile scaricare il file di backup."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferenze",
       "notifications": "Notifiche",
       "api-tokens": "Token di accesso personali",
-      "connections": "Connessioni"
+      "connections": "Connessioni",
+      "backup": "Backup"
     },
     "tabs": {
       "summary": "Riepilogo",

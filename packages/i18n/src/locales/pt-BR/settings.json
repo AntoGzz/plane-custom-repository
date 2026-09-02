@@ -65,6 +65,50 @@
       "title": "Conexões",
       "heading": "Conexões",
       "description": "Gerencie as configurações de conexões do seu espaço de trabalho."
+    },
+    "backup": {
+      "heading": "Backups",
+      "description": "Crie e baixe snapshots desta instância do Plane, incluindo o banco de dados e os arquivos enviados.",
+      "create": "Criar backup",
+      "creating": "Criando backup",
+      "components": "O que incluir",
+      "include_database": "Banco de dados",
+      "include_files": "Arquivos (MinIO / S3)",
+      "database": "Banco de dados",
+      "files": "Arquivos",
+      "note_label": "Nota",
+      "note_placeholder": "Nota opcional para este snapshot",
+      "empty_description": "Ainda não há backups. Crie um para capturar o banco de dados e os arquivos enviados.",
+      "download": "Baixar",
+      "delete": "Excluir",
+      "restore": "Restaurar",
+      "restoring": "Restaurando",
+      "delete_title": "Excluir este backup?",
+      "delete_description": "O arquivo de backup será removido permanentemente. Isso não pode ser desfeito.",
+      "restore_title": "Restaurar este backup?",
+      "restore_description": "Isso substitui o banco de dados e os arquivos atuais pelo snapshot. A instância pode ficar indisponível até o término. Isso não pode ser desfeito.",
+      "forbidden": "Somente administradores da instância podem gerenciar backups.",
+      "status": {
+        "queued": "Na fila",
+        "processing": "Em andamento",
+        "completed": "Pronto",
+        "failed": "Falhou",
+        "restoring": "Restaurando"
+      },
+      "errors": {
+        "select_component": "Selecione pelo menos o banco de dados ou os arquivos."
+      },
+      "toast": {
+        "created_title": "Backup iniciado",
+        "created_message": "Você poderá baixá-lo quando o snapshot estiver pronto.",
+        "deleted_title": "Backup excluído",
+        "deleted_message": "O snapshot foi removido.",
+        "restored_title": "Restauração iniciada",
+        "restored_message": "Mantenha esta aba aberta até terminar. Pode ser necessário recarregar depois.",
+        "error_title": "Algo deu errado",
+        "error_message": "Não foi possível concluir a ação de backup.",
+        "download_error": "Não foi possível baixar o arquivo de backup."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferências",
       "notifications": "Notificações",
       "api-tokens": "Tokens de Acesso Pessoal",
-      "connections": "Conexões"
+      "connections": "Conexões",
+      "backup": "Backups"
     },
     "tabs": {
       "summary": "Resumo",

@@ -131,7 +131,8 @@ export class IssueSubIssuesStore implements IIssueSubIssuesStore {
 
     const subIssuesStateDistribution = response?.state_distribution ?? {};
 
-    const issueList = (response.sub_issues ?? []) as TIssue[];
+    const rawSubIssues = response.sub_issues ?? [];
+    const issueList = (Array.isArray(rawSubIssues) ? rawSubIssues : Object.values(rawSubIssues).flat()) as TIssue[];
 
     this.rootIssueDetailStore.rootIssueStore.issues.addIssue(issueList);
 
@@ -186,10 +187,10 @@ export class IssueSubIssuesStore implements IIssueSubIssuesStore {
         });
       });
 
-      const issueIds = subIssues.map((issue) => issue.id);
+      const createdIssueIds = subIssues.map((issue) => issue.id);
       update(this.subIssues, [parentIssueId], (issues) => {
-        if (!issues) return issueIds;
-        return concat(issues, issueIds);
+        if (!issues) return createdIssueIds;
+        return concat(issues, createdIssueIds);
       });
     });
 

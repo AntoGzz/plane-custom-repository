@@ -65,6 +65,50 @@
       "title": "Koneksi",
       "heading": "Koneksi",
       "description": "Kelola pengaturan koneksi ruang kerja Anda."
+    },
+    "backup": {
+      "heading": "Cadangan",
+      "description": "Buat dan unduh snapshot instans Plane ini, termasuk basis data dan file yang diunggah.",
+      "create": "Buat cadangan",
+      "creating": "Membuat cadangan",
+      "components": "Yang disertakan",
+      "include_database": "Basis data",
+      "include_files": "File (MinIO / S3)",
+      "database": "Basis data",
+      "files": "File",
+      "note_label": "Catatan",
+      "note_placeholder": "Catatan opsional untuk snapshot ini",
+      "empty_description": "Belum ada cadangan. Buat satu untuk menyimpan basis data dan file yang diunggah.",
+      "download": "Unduh",
+      "delete": "Hapus",
+      "restore": "Pulihkan",
+      "restoring": "Memulihkan",
+      "delete_title": "Hapus cadangan ini?",
+      "delete_description": "File cadangan akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.",
+      "restore_title": "Pulihkan cadangan ini?",
+      "restore_description": "Ini mengganti basis data dan file saat ini dengan snapshot. Instans mungkin tidak tersedia hingga selesai. Tindakan ini tidak dapat dibatalkan.",
+      "forbidden": "Hanya admin instans yang dapat mengelola cadangan.",
+      "status": {
+        "queued": "Antre",
+        "processing": "Berlangsung",
+        "completed": "Siap",
+        "failed": "Gagal",
+        "restoring": "Memulihkan"
+      },
+      "errors": {
+        "select_component": "Pilih setidaknya basis data atau file."
+      },
+      "toast": {
+        "created_title": "Cadangan dimulai",
+        "created_message": "Anda dapat mengunduhnya saat snapshot siap.",
+        "deleted_title": "Cadangan dihapus",
+        "deleted_message": "Snapshot telah dihapus.",
+        "restored_title": "Pemulihan dimulai",
+        "restored_message": "Biarkan tab ini terbuka hingga selesai. Anda mungkin perlu memuat ulang setelahnya.",
+        "error_title": "Terjadi kesalahan",
+        "error_message": "Tindakan cadangan tidak dapat diselesaikan.",
+        "download_error": "File cadangan tidak dapat diunduh."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferensi",
       "notifications": "Notifikasi",
       "api-tokens": "Token Akses Personal",
-      "connections": "Koneksi"
+      "connections": "Koneksi",
+      "backup": "Cadangan"
     },
     "tabs": {
       "summary": "Ringkasan",

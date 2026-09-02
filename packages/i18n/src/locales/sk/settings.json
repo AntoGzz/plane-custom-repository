@@ -65,6 +65,50 @@
       "title": "Prepojenia",
       "heading": "Prepojenia",
       "description": "Spravujte nastavenia prepojení svojho pracovného priestoru."
+    },
+    "backup": {
+      "heading": "Zálohy",
+      "description": "Vytvárajte a sťahujte snímky tejto inštancie Plane vrátane databázy a nahraných súborov.",
+      "create": "Vytvoriť zálohu",
+      "creating": "Vytváranie zálohy",
+      "components": "Čo zahrnúť",
+      "include_database": "Databáza",
+      "include_files": "Súbory (MinIO / S3)",
+      "database": "Databáza",
+      "files": "Súbory",
+      "note_label": "Poznámka",
+      "note_placeholder": "Voliteľná poznámka k tomuto snímku",
+      "empty_description": "Zatiaľ žiadne zálohy. Vytvorte jednu, aby ste uložili databázu a nahrané súbory.",
+      "download": "Stiahnuť",
+      "delete": "Odstrániť",
+      "restore": "Obnoviť",
+      "restoring": "Obnovovanie",
+      "delete_title": "Odstrániť túto zálohu?",
+      "delete_description": "Súbor zálohy sa natrvalo odstráni. Túto akciu nie je možné vrátiť späť.",
+      "restore_title": "Obnoviť túto zálohu?",
+      "restore_description": "Tým sa nahradí aktuálna databáza a súbory snímkom. Inštancia môže byť do dokončenia nedostupná. Túto akciu nie je možné vrátiť späť.",
+      "forbidden": "Zálohy môžu spravovať iba správcovia inštancie.",
+      "status": {
+        "queued": "Vo fronte",
+        "processing": "Prebieha",
+        "completed": "Pripravené",
+        "failed": "Zlyhalo",
+        "restoring": "Obnovovanie"
+      },
+      "errors": {
+        "select_component": "Vyberte aspoň databázu alebo súbory."
+      },
+      "toast": {
+        "created_title": "Záloha spustená",
+        "created_message": "Stiahnete ju, keď bude snímok pripravený.",
+        "deleted_title": "Záloha odstránená",
+        "deleted_message": "Snímok bol odstránený.",
+        "restored_title": "Obnovenie spustené",
+        "restored_message": "Nechajte túto kartu otvorenú do dokončenia. Potom môže byť potrebné znova načítať stránku.",
+        "error_title": "Niečo sa pokazilo",
+        "error_message": "Akciu zálohy sa nepodarilo dokončiť.",
+        "download_error": "Súbor zálohy sa nepodarilo stiahnuť."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Predvoľby",
       "notifications": "Oznámenia",
       "api-tokens": "Osobné prístupové tokeny",
-      "connections": "Pripojenia"
+      "connections": "Pripojenia",
+      "backup": "Zálohy"
     },
     "tabs": {
       "summary": "Zhrnutie",

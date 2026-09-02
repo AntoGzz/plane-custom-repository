@@ -65,6 +65,50 @@
       "title": "Spojení",
       "heading": "Spojení",
       "description": "Spravujte nastavení spojení vašeho pracovního prostoru."
+    },
+    "backup": {
+      "heading": "Zálohy",
+      "description": "Vytvářejte a stahujte snímky této instance Plane včetně databáze a nahraných souborů.",
+      "create": "Vytvořit zálohu",
+      "creating": "Vytváření zálohy",
+      "components": "Co zahrnout",
+      "include_database": "Databáze",
+      "include_files": "Soubory (MinIO / S3)",
+      "database": "Databáze",
+      "files": "Soubory",
+      "note_label": "Poznámka",
+      "note_placeholder": "Volitelná poznámka k tomuto snímku",
+      "empty_description": "Zatím žádné zálohy. Vytvořte jednu, abyste uložili databázi a nahrané soubory.",
+      "download": "Stáhnout",
+      "delete": "Odstranit",
+      "restore": "Obnovit",
+      "restoring": "Obnovování",
+      "delete_title": "Odstranit tuto zálohu?",
+      "delete_description": "Soubor zálohy bude trvale odstraněn. Tuto akci nelze vrátit zpět.",
+      "restore_title": "Obnovit tuto zálohu?",
+      "restore_description": "Tím se nahradí aktuální databáze a soubory snímkem. Instance může být do dokončení nedostupná. Tuto akci nelze vrátit zpět.",
+      "forbidden": "Zálohy mohou spravovat pouze správci instance.",
+      "status": {
+        "queued": "Ve frontě",
+        "processing": "Probíhá",
+        "completed": "Připraveno",
+        "failed": "Selhalo",
+        "restoring": "Obnovování"
+      },
+      "errors": {
+        "select_component": "Vyberte alespoň databázi nebo soubory."
+      },
+      "toast": {
+        "created_title": "Záloha spuštěna",
+        "created_message": "Stáhnete ji, až bude snímek připraven.",
+        "deleted_title": "Záloha odstraněna",
+        "deleted_message": "Snímek byl odstraněn.",
+        "restored_title": "Obnovení spuštěno",
+        "restored_message": "Ponechte tuto kartu otevřenou do dokončení. Poté může být nutné znovu načíst stránku.",
+        "error_title": "Něco se pokazilo",
+        "error_message": "Akci zálohy se nepodařilo dokončit.",
+        "download_error": "Soubor zálohy se nepodařilo stáhnout."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Předvolby",
       "notifications": "Oznámení",
       "api-tokens": "Osobní přístupové tokeny",
-      "connections": "Spojení"
+      "connections": "Spojení",
+      "backup": "Zálohy"
     },
     "tabs": {
       "summary": "Shrnutí",

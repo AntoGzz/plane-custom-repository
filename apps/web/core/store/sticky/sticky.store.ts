@@ -83,7 +83,9 @@ export class StickyStore implements IStickyStore {
 
   getWorkspaceStickyIds = computedFn((workspaceSlug: string) =>
     orderBy(
-      (this.workspaceStickies[workspaceSlug] || []).map((stickyId) => this.stickies[stickyId]),
+      (this.workspaceStickies[workspaceSlug] || [])
+        .map((stickyId) => this.stickies[stickyId])
+        .filter((sticky): sticky is TSticky => Boolean(sticky?.id)),
       ["sort_order"],
       ["desc"]
     ).map((sticky) => sticky.id)
@@ -205,7 +207,7 @@ export class StickyStore implements IStickyStore {
     } catch (error) {
       console.error("Error in updating sticky:", error);
       this.stickies[id] = sticky;
-      throw new Error();
+      throw new Error("Failed to update sticky", { cause: error });
     }
   };
 
@@ -232,27 +234,31 @@ export class StickyStore implements IStickyStore {
     destinationId: string,
     edge: InstructionType
   ) => {
+    if (stickyId === destinationId) return;
+    if (!this.stickies[stickyId]) return;
     const previousSortOrder = this.stickies[stickyId].sort_order;
     try {
-      let resultSequence = 10000;
+      const sequenceGap = 10000;
+      let resultSequence = sequenceGap;
       const workspaceStickies = this.workspaceStickies[workspaceSlug] || [];
-      const stickies = workspaceStickies.map((id) => this.stickies[id]);
+      const stickies = workspaceStickies
+        .map((id) => this.stickies[id])
+        .filter((sticky): sticky is TSticky => Boolean(sticky?.id));
       const sortedStickies = orderBy(stickies, "sort_order", "desc").map((sticky) => sticky.id);
-      const destinationSequence = this.stickies[destinationId]?.sort_order || undefined;
+      const destinationSequence = this.stickies[destinationId]?.sort_order;
 
-      if (destinationSequence) {
+      if (destinationSequence !== undefined) {
         const destinationIndex = sortedStickies.findIndex((id) => id === destinationId);
+        const placeAbove = edge === "reorder-above";
 
-        if (edge === "reorder-above") {
-          const prevSequence = this.stickies[sortedStickies[destinationIndex - 1]]?.sort_order || undefined;
-          if (prevSequence) {
-            resultSequence = (destinationSequence + prevSequence) / 2;
-          } else {
-            resultSequence = destinationSequence + resultSequence;
-          }
+        if (placeAbove) {
+          const prevSequence = this.stickies[sortedStickies[destinationIndex - 1]]?.sort_order;
+          resultSequence =
+            prevSequence !== undefined ? (destinationSequence + prevSequence) / 2 : destinationSequence + sequenceGap;
         } else {
-          // reorder-below
-          resultSequence = destinationSequence - resultSequence;
+          const nextSequence = this.stickies[sortedStickies[destinationIndex + 1]]?.sort_order;
+          resultSequence =
+            nextSequence !== undefined ? (destinationSequence + nextSequence) / 2 : destinationSequence - sequenceGap;
         }
       }
 

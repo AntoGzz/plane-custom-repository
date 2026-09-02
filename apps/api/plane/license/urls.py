@@ -18,6 +18,10 @@ from plane.license.api.views import (
     InstanceAdminUserSessionEndpoint,
     InstanceWorkSpaceAvailabilityCheckEndpoint,
     InstanceWorkSpaceEndpoint,
+    InstanceBackupEndpoint,
+    InstanceBackupDetailEndpoint,
+    InstanceBackupDownloadEndpoint,
+    InstanceBackupRestoreEndpoint,
 )
 
 urlpatterns = [
@@ -71,4 +75,16 @@ urlpatterns = [
         name="instance-workspace-availability",
     ),
     path("workspaces/", InstanceWorkSpaceEndpoint.as_view(), name="instance-workspace"),
+    path("backups/", InstanceBackupEndpoint.as_view(), name="instance-backups"),
+    path("backups/<uuid:pk>/", InstanceBackupDetailEndpoint.as_view(), name="instance-backup-detail"),
+    path(
+        "backups/<uuid:pk>/download/",
+        InstanceBackupDownloadEndpoint.as_view(),
+        name="instance-backup-download",
+    ),
+    path(
+        "backups/<uuid:pk>/restore/",
+        InstanceBackupRestoreEndpoint.as_view(),
+        name="instance-backup-restore",
+    ),
 ]

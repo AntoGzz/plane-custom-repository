@@ -14,7 +14,7 @@ export type TFileMetaDataLite = {
 };
 
 export type TFileEntityInfo = {
-  entity_identifier: string;
+  entity_identifier?: string;
   entity_type: EFileAssetType;
 };
 

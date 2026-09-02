@@ -9,16 +9,19 @@ import type { TProfileSettingsTabs } from "@plane/types";
 
 export enum PROFILE_SETTINGS_CATEGORY {
   YOUR_PROFILE = "your profile",
+  ADMINISTRATION = "administration",
   DEVELOPER = "developer",
 }
 
 export const PROFILE_SETTINGS_CATEGORIES: PROFILE_SETTINGS_CATEGORY[] = [
   PROFILE_SETTINGS_CATEGORY.YOUR_PROFILE,
+  PROFILE_SETTINGS_CATEGORY.ADMINISTRATION,
   PROFILE_SETTINGS_CATEGORY.DEVELOPER,
 ];
 
 export const PROFILE_SETTINGS_CATEGORY_LABELS: Record<PROFILE_SETTINGS_CATEGORY, string> = {
   [PROFILE_SETTINGS_CATEGORY.YOUR_PROFILE]: "common.your_profile",
+  [PROFILE_SETTINGS_CATEGORY.ADMINISTRATION]: "common.administration",
   [PROFILE_SETTINGS_CATEGORY.DEVELOPER]: "common.developer",
 };
 
@@ -49,6 +52,10 @@ export const PROFILE_SETTINGS: Record<
     key: "api-tokens",
     i18n_label: "profile.actions.api-tokens",
   },
+  backup: {
+    key: "backup",
+    i18n_label: "profile.actions.backup",
+  },
 };
 
 export const PROFILE_SETTINGS_TABS: TProfileSettingsTabs[] = Object.keys(PROFILE_SETTINGS) as TProfileSettingsTabs[];
@@ -63,5 +70,6 @@ export const GROUPED_PROFILE_SETTINGS: Record<
     PROFILE_SETTINGS["notifications"],
     PROFILE_SETTINGS["security"],
   ],
+  [PROFILE_SETTINGS_CATEGORY.ADMINISTRATION]: [PROFILE_SETTINGS["backup"]],
   [PROFILE_SETTINGS_CATEGORY.DEVELOPER]: [PROFILE_SETTINGS["api-tokens"]],
 };

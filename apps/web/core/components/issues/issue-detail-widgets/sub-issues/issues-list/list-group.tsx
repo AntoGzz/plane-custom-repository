@@ -57,47 +57,50 @@ export const SubIssuesListGroup = observer(function SubIssuesListGroup(props: TS
 
   if (!workItemIds.length) return null;
 
+  const listItems = workItemIds.map((workItemId) => (
+    <SubIssuesListItem
+      key={workItemId}
+      workspaceSlug={workspaceSlug}
+      projectId={projectId}
+      parentIssueId={parentIssueId}
+      rootIssueId={rootIssueId}
+      issueId={workItemId}
+      canEdit={canEdit}
+      handleIssueCrudState={handleIssueCrudState}
+      subIssueOperations={subIssueOperations}
+      issueServiceType={serviceType}
+      spacingLeft={spacingLeft}
+      storeType={storeType}
+    />
+  ));
+
+  // Ungrouped list: skip Collapsible so items are always visible.
+  if (isAllIssues) {
+    return <>{listItems}</>;
+  }
+
   return (
-    <>
-      <Collapsible
-        isOpen={isCollapsibleOpen}
-        onToggle={() => setIsCollapsibleOpen(!isCollapsibleOpen)}
-        title={
-          !isAllIssues && (
-            <div className="flex items-center gap-2 p-3">
-              <ChevronRightIcon
-                className={cn("size-3.5 text-placeholder transition-all", {
-                  "rotate-90": isCollapsibleOpen,
-                })}
-                strokeWidth={2.5}
-              />
-              <div className="grid flex-shrink-0 place-items-center overflow-hidden">
-                {group.icon ?? <CircleDashed className="size-3.5" strokeWidth={2} />}
-              </div>
-              <span className="text-13 font-medium text-primary">{group.name}</span>
-              <span className="text-13 text-placeholder">{workItemIds.length}</span>
-            </div>
-          )
-        }
-        buttonClassName={cn("hidden", !isAllIssues && "block")}
-      >
-        {workItemIds?.map((workItemId) => (
-          <SubIssuesListItem
-            key={workItemId}
-            workspaceSlug={workspaceSlug}
-            projectId={projectId}
-            parentIssueId={parentIssueId}
-            rootIssueId={rootIssueId}
-            issueId={workItemId}
-            canEdit={canEdit}
-            handleIssueCrudState={handleIssueCrudState}
-            subIssueOperations={subIssueOperations}
-            issueServiceType={serviceType}
-            spacingLeft={spacingLeft}
-            storeType={storeType}
+    <Collapsible
+      isOpen={isCollapsibleOpen}
+      onToggle={() => setIsCollapsibleOpen(!isCollapsibleOpen)}
+      title={
+        <div className="flex items-center gap-2 p-3">
+          <ChevronRightIcon
+            className={cn("size-3.5 text-placeholder transition-all", {
+              "rotate-90": isCollapsibleOpen,
+            })}
+            strokeWidth={2.5}
           />
-        ))}
-      </Collapsible>
-    </>
+          <div className="grid flex-shrink-0 place-items-center overflow-hidden">
+            {group.icon ?? <CircleDashed className="size-3.5" strokeWidth={2} />}
+          </div>
+          <span className="text-13 font-medium text-primary">{group.name}</span>
+          <span className="text-13 text-placeholder">{workItemIds.length}</span>
+        </div>
+      }
+      buttonClassName="block"
+    >
+      {listItems}
+    </Collapsible>
   );
 });

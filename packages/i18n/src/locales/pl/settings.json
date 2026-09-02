@@ -65,6 +65,50 @@
       "title": "Połączenia",
       "heading": "Połączenia",
       "description": "Zarządzaj ustawieniami połączeń przestrzeni roboczej."
+    },
+    "backup": {
+      "heading": "Kopie zapasowe",
+      "description": "Twórz i pobieraj migawki tej instancji Plane, w tym bazę danych i przesłane pliki.",
+      "create": "Utwórz kopię zapasową",
+      "creating": "Tworzenie kopii zapasowej",
+      "components": "Co uwzględnić",
+      "include_database": "Baza danych",
+      "include_files": "Pliki (MinIO / S3)",
+      "database": "Baza danych",
+      "files": "Pliki",
+      "note_label": "Uwaga",
+      "note_placeholder": "Opcjonalna uwaga do tej migawki",
+      "empty_description": "Brak kopii zapasowych. Utwórz jedną, aby zapisać bazę danych i przesłane pliki.",
+      "download": "Pobierz",
+      "delete": "Usuń",
+      "restore": "Przywróć",
+      "restoring": "Przywracanie",
+      "delete_title": "Usunąć tę kopię zapasową?",
+      "delete_description": "Plik kopii zapasowej zostanie trwale usunięty. Tej operacji nie można cofnąć.",
+      "restore_title": "Przywrócić tę kopię zapasową?",
+      "restore_description": "To zastąpi bieżącą bazę danych i pliki migawką. Instancja może być niedostępna do zakończenia. Tej operacji nie można cofnąć.",
+      "forbidden": "Tylko administratorzy instancji mogą zarządzać kopiami zapasowymi.",
+      "status": {
+        "queued": "W kolejce",
+        "processing": "W toku",
+        "completed": "Gotowa",
+        "failed": "Niepowodzenie",
+        "restoring": "Przywracanie"
+      },
+      "errors": {
+        "select_component": "Wybierz co najmniej bazę danych lub pliki."
+      },
+      "toast": {
+        "created_title": "Rozpoczęto kopię zapasową",
+        "created_message": "Pobierzesz ją, gdy migawka będzie gotowa.",
+        "deleted_title": "Usunięto kopię zapasową",
+        "deleted_message": "Migawka została usunięta.",
+        "restored_title": "Rozpoczęto przywracanie",
+        "restored_message": "Pozostaw tę kartę otwartą do zakończenia. Potem może być konieczne odświeżenie.",
+        "error_title": "Coś poszło nie tak",
+        "error_message": "Nie udało się ukończyć operacji kopii zapasowej.",
+        "download_error": "Nie udało się pobrać pliku kopii zapasowej."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Preferencje",
       "notifications": "Powiadomienia",
       "api-tokens": "Osobiste tokeny dostępu",
-      "connections": "Połączenia"
+      "connections": "Połączenia",
+      "backup": "Kopie zapasowe"
     },
     "tabs": {
       "summary": "Podsumowanie",

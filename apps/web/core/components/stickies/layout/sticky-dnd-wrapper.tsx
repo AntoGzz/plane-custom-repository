@@ -38,8 +38,6 @@ type Props = {
 
 export const StickyDNDWrapper = observer(function StickyDNDWrapper(props: Props) {
   const { stickyId, workspaceSlug, itemWidth, isLastChild, handleDrop, handleLayout } = props;
-  // states
-  const [isDragging, setIsDragging] = useState(false);
   const [_instruction, setInstruction] = useState<InstructionType | undefined>(undefined);
   // refs
   const elementRef = useRef<HTMLDivElement>(null);
@@ -58,12 +56,6 @@ export const StickyDNDWrapper = observer(function StickyDNDWrapper(props: Props)
           element,
           dragHandle: element,
           getInitialData: () => initialData,
-          onDragStart: () => {
-            setIsDragging(true);
-          },
-          onDrop: () => {
-            setIsDragging(false);
-          },
           onGenerateDragPreview: ({ nativeSetDragImage }) => {
             setCustomNativeDragPreview({
               getOffset: pointerOutsideOfPreview({ x: "-200px", y: "0px" }),
@@ -90,7 +82,7 @@ export const StickyDNDWrapper = observer(function StickyDNDWrapper(props: Props)
         dropTargetForElements({
           element,
           canDrop: ({ source }) => source.data?.type === "sticky",
-          getData: ({ input, element }) => {
+          getData: ({ input, element: dropTargetElement }) => {
             const blockedStates: InstructionType[] = ["make-child"];
             if (!isLastChild) {
               blockedStates.push("reorder-below");
@@ -98,7 +90,7 @@ export const StickyDNDWrapper = observer(function StickyDNDWrapper(props: Props)
 
             return attachInstruction(initialData, {
               input,
-              element,
+              element: dropTargetElement,
               currentLevel: 1,
               indentPerLevel: 0,
               mode: isLastChild ? "last-in-group" : "standard",
@@ -118,10 +110,11 @@ export const StickyDNDWrapper = observer(function StickyDNDWrapper(props: Props)
           },
         })
       );
-  }, [handleDrop, isDragging, isLastChild, pathname, stickyId, workspaceSlug]);
+  }, [handleDrop, isLastChild, pathname, stickyId, workspaceSlug]);
 
   return (
     <div
+      ref={elementRef}
       className="box-border flex flex-col p-[8px]"
       style={{
         width: itemWidth,

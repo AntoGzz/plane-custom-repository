@@ -65,6 +65,50 @@
       "title": "接続",
       "heading": "接続",
       "description": "ワークスペースの接続設定を管理します。"
+    },
+    "backup": {
+      "heading": "バックアップ",
+      "description": "データベースとアップロード済みファイルを含む、この Plane インスタンスのスナップショットを作成してダウンロードします。",
+      "create": "バックアップを作成",
+      "creating": "バックアップを作成中",
+      "components": "含める項目",
+      "include_database": "データベース",
+      "include_files": "ファイル（MinIO / S3）",
+      "database": "データベース",
+      "files": "ファイル",
+      "note_label": "メモ",
+      "note_placeholder": "このスナップショットの任意メモ",
+      "empty_description": "まだバックアップはありません。データベースとアップロード済みファイルを保存するには作成してください。",
+      "download": "ダウンロード",
+      "delete": "削除",
+      "restore": "復元",
+      "restoring": "復元中",
+      "delete_title": "このバックアップを削除しますか？",
+      "delete_description": "バックアップファイルは完全に削除されます。この操作は元に戻せません。",
+      "restore_title": "このバックアップを復元しますか？",
+      "restore_description": "現在のデータベースとファイルがスナップショットに置き換わります。完了するまでインスタンスを利用できない場合があります。この操作は元に戻せません。",
+      "forbidden": "バックアップを管理できるのはインスタンス管理者のみです。",
+      "status": {
+        "queued": "待機中",
+        "processing": "処理中",
+        "completed": "準備完了",
+        "failed": "失敗",
+        "restoring": "復元中"
+      },
+      "errors": {
+        "select_component": "データベースまたはファイルを少なくとも1つ選択してください。"
+      },
+      "toast": {
+        "created_title": "バックアップを開始しました",
+        "created_message": "スナップショットの準備ができたらダウンロードできます。",
+        "deleted_title": "バックアップを削除しました",
+        "deleted_message": "スナップショットを削除しました。",
+        "restored_title": "復元を開始しました",
+        "restored_message": "完了するまでこのタブを開いたままにしてください。その後、再読み込みが必要な場合があります。",
+        "error_title": "問題が発生しました",
+        "error_message": "バックアップ操作を完了できませんでした。",
+        "download_error": "バックアップファイルをダウンロードできませんでした。"
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "環境設定",
       "notifications": "通知",
       "api-tokens": "個人アクセストークン",
-      "connections": "接続"
+      "connections": "接続",
+      "backup": "バックアップ"
     },
     "tabs": {
       "summary": "サマリー",

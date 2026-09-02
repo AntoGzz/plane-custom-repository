@@ -89,8 +89,9 @@ export const IssueDetailWidgetModals = observer(function IssueDetailWidgetModals
   };
 
   const handleCreateUpdateModalOnSubmit = async (_issue: TIssue) => {
-    if (_issue.parent_id) {
-      await subIssueOperations.addSubIssue(workspaceSlug, projectId, _issue.parent_id, [_issue.id]);
+    const parentId = _issue.parent_id || issueCrudOperationState?.create?.parentIssueId || issueId;
+    if (parentId) {
+      await subIssueOperations.addSubIssue(workspaceSlug, projectId, parentId, [_issue.id]);
     }
   };
 

@@ -65,6 +65,50 @@
       "title": "Bağlantılar",
       "heading": "Bağlantılar",
       "description": "Çalışma alanı bağlantı ayarlarınızı yönetin."
+    },
+    "backup": {
+      "heading": "Yedekler",
+      "description": "Veritabanı ve yüklenen dosyalar dahil bu Plane örneğinin anlık görüntülerini oluşturun ve indirin.",
+      "create": "Yedek oluştur",
+      "creating": "Yedek oluşturuluyor",
+      "components": "Neler dahil edilsin",
+      "include_database": "Veritabanı",
+      "include_files": "Dosyalar (MinIO / S3)",
+      "database": "Veritabanı",
+      "files": "Dosyalar",
+      "note_label": "Not",
+      "note_placeholder": "Bu anlık görüntü için isteğe bağlı not",
+      "empty_description": "Henüz yedek yok. Veritabanını ve yüklenen dosyaları kaydetmek için bir yedek oluşturun.",
+      "download": "İndir",
+      "delete": "Sil",
+      "restore": "Geri yükle",
+      "restoring": "Geri yükleniyor",
+      "delete_title": "Bu yedek silinsin mi?",
+      "delete_description": "Yedek dosyası kalıcı olarak kaldırılacak. Bu işlem geri alınamaz.",
+      "restore_title": "Bu yedek geri yüklensin mi?",
+      "restore_description": "Bu, geçerli veritabanını ve dosyaları anlık görüntüyle değiştirir. İşlem bitene kadar örnek kullanılamayabilir. Bu işlem geri alınamaz.",
+      "forbidden": "Yedekleri yalnızca örnek yöneticileri yönetebilir.",
+      "status": {
+        "queued": "Sırada",
+        "processing": "Devam ediyor",
+        "completed": "Hazır",
+        "failed": "Başarısız",
+        "restoring": "Geri yükleniyor"
+      },
+      "errors": {
+        "select_component": "En azından veritabanını veya dosyaları seçin."
+      },
+      "toast": {
+        "created_title": "Yedek başladı",
+        "created_message": "Anlık görüntü hazır olduğunda indirebilirsiniz.",
+        "deleted_title": "Yedek silindi",
+        "deleted_message": "Anlık görüntü kaldırıldı.",
+        "restored_title": "Geri yükleme başladı",
+        "restored_message": "Bitene kadar bu sekmeyi açık tutun. Sonrasında sayfayı yenilemeniz gerekebilir.",
+        "error_title": "Bir sorun oluştu",
+        "error_message": "Yedekleme işlemi tamamlanamadı.",
+        "download_error": "Yedek dosyası indirilemedi."
+      }
     }
   },
   "profile": {
@@ -103,7 +147,8 @@
       "preferences": "Tercihler",
       "notifications": "Bildirimler",
       "api-tokens": "Kişisel Erişim Tokenları",
-      "connections": "Bağlantılar"
+      "connections": "Bağlantılar",
+      "backup": "Yedekler"
     },
     "tabs": {
       "summary": "Özet",
